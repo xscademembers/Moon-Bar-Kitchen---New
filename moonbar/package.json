@@ -14,6 +14,7 @@
   "dependencies": {
     "@astrojs/react": "^5.0.5",
     "@astrojs/sitemap": "^3.7.2",
+    "@astrojs/vercel": "^10.0.7",
     "@fontsource/cormorant-garamond": "^5.2.11",
     "@fontsource/inter": "^5.2.8",
     "@fontsource/space-grotesk": "^5.2.10",
