@@ -10,66 +10,67 @@ const footerLinks = [
 ];
 ---
 
-<footer class="border-t border-moon-cream/10 bg-moon-bg-deep">
+<footer class="border-t border-moon-cream/10 bg-moon-footer">
   <div class="section-padding !pb-12">
     <div class="container-moon grid gap-12 md:grid-cols-2 lg:grid-cols-4">
       <div class="lg:col-span-1">
         <a href="/" class="inline-flex items-center gap-3 mb-4">
-          <span class="flex h-10 w-10 items-center justify-center rounded-full bg-moon-surface border border-moon-gold/30 text-lg">🌙</span>
+          <span class="flex h-10 w-10 items-center justify-center rounded-full bg-moon-olive border border-moon-sand text-lg text-moon-sand">🌙</span>
           <span class="font-display text-xl text-moon-cream">Moon Bar & Kitchen</span>
         </a>
-        <p class="text-sm text-moon-cream/60 leading-relaxed">
-          Visakhapatnam's rooftop resto-bar — cocktails, cuisine & live music under the stars.
+        <p class="text-sm text-moon-cream/80 leading-relaxed">
+          Visakhapatnam's elevated resto-bar — cocktails, cuisine & live music under the stars.
         </p>
       </div>
 
       <div>
-        <h3 class="font-accent text-xs uppercase tracking-[0.2em] text-moon-gold mb-4">Explore</h3>
+        <h3 class="font-accent text-xs uppercase tracking-[0.2em] text-moon-sand mb-4">Explore</h3>
         <ul class="space-y-2">
           {footerLinks.map(({ href, label }) => (
             <li>
-              <a href={href} class="text-sm text-moon-cream/60 hover:text-moon-gold transition-colors">{label}</a>
+              <a href={href} class="text-sm text-moon-cream/80 hover:text-moon-gold transition-colors">{label}</a>
             </li>
           ))}
         </ul>
       </div>
 
       <div>
-        <h3 class="font-accent text-xs uppercase tracking-[0.2em] text-moon-gold mb-4">Visit Us</h3>
-        <address class="not-italic text-sm text-moon-cream/60 space-y-2">
+        <h3 class="font-accent text-xs uppercase tracking-[0.2em] text-moon-sand mb-4">Visit Us</h3>
+        <address class="not-italic text-sm text-moon-cream/80 space-y-2">
           <p>{siteInfo.address}</p>
           <p>
-            <a href={`tel:${siteInfo.phone.replace(/\s/g, '')}`} class="hover:text-moon-gold transition-colors">{siteInfo.phone}</a>
+            <a href={`tel:${siteInfo.phone.replace(/\s/g, '')}`} class="text-moon-cream/80 hover:text-moon-gold transition-colors">{siteInfo.phone}</a>
           </p>
           <p>{siteInfo.hours}</p>
         </address>
       </div>
 
       <div>
-        <h3 class="font-accent text-xs uppercase tracking-[0.2em] text-moon-gold mb-4">Connect</h3>
+        <h3 class="font-accent text-xs uppercase tracking-[0.2em] text-moon-sand mb-4">Connect</h3>
         <ul class="space-y-2 text-sm">
           <li>
-            <a href={siteInfo.instagram} target="_blank" rel="noopener noreferrer" class="text-moon-cream/60 hover:text-moon-gold transition-colors">Instagram</a>
+            <a href={siteInfo.instagram} target="_blank" rel="noopener noreferrer" class="text-moon-cream/80 hover:text-moon-gold transition-colors">Instagram</a>
           </li>
           <li>
-            <a href={siteInfo.facebook} target="_blank" rel="noopener noreferrer" class="text-moon-cream/60 hover:text-moon-gold transition-colors">Facebook</a>
+            <a href={siteInfo.facebook} target="_blank" rel="noopener noreferrer" class="text-moon-cream/80 hover:text-moon-gold transition-colors">Facebook</a>
           </li>
           <li>
-            <a href={siteInfo.maps} target="_blank" rel="noopener noreferrer" class="text-moon-cream/60 hover:text-moon-gold transition-colors">Google Reviews</a>
+            <a href={siteInfo.maps} target="_blank" rel="noopener noreferrer" class="text-moon-cream/80 hover:text-moon-gold transition-colors">Google Reviews</a>
           </li>
           <li>
-            <a href={`https://wa.me/${siteInfo.whatsapp}`} target="_blank" rel="noopener noreferrer" class="text-moon-cream/60 hover:text-moon-gold transition-colors">WhatsApp</a>
+            <a href={`https://wa.me/${siteInfo.whatsapp}`} target="_blank" rel="noopener noreferrer" class="text-moon-cream/80 hover:text-moon-gold transition-colors">WhatsApp</a>
           </li>
         </ul>
       </div>
     </div>
 
     <div class="container-moon mt-12 flex flex-col gap-4 border-t border-moon-cream/10 pt-8 sm:flex-row sm:items-center sm:justify-between">
-      <p class="text-xs text-moon-cream/40">
+      <p class="text-xs text-moon-cream/80">
         © {new Date().getFullYear()} Moon Bar & Kitchen. All rights reserved.
       </p>
-      <p class="text-xs text-moon-cream/40">
-        We use minimal cookies for the spin wheel session only. <a href="/contact" class="underline hover:text-moon-gold">Privacy</a>
+      <p class="text-xs text-moon-cream/80">
+        We use minimal cookies for the spin wheel session only.
+        <a href="/contact" class="ml-1 text-moon-cream underline hover:text-moon-gold transition-colors">Privacy</a>
       </p>
     </div>
   </div>

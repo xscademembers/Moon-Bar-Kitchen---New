@@ -2,28 +2,30 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import SpinWheel from '../components/SpinWheel';
-import EventsGrid from '../components/EventsGrid.astro';
-import MenuPreview from '../components/MenuPreview.astro';
 import AboutStrip from '../components/AboutStrip.astro';
+import MenuPreview from '../components/MenuPreview.astro';
+import EventsGrid from '../components/EventsGrid.astro';
 import BlogCard from '../components/BlogCard.astro';
+import Gallery from '../components/Gallery.astro';
 import VisitUs from '../components/VisitUs.astro';
 import { blogPosts } from '../data/mock';
 ---
 
 <BaseLayout
   title="Best Resto Bar in Vizag"
-  description="Moon Bar & Kitchen — rooftop resto-bar in Siripuram, Visakhapatnam. Spin the wheel for a free perk, reserve your table, and enjoy cocktails, live music & Sunday brunch."
+  description="Moon Bar & Kitchen — elevated resto-bar in Siripuram, Visakhapatnam. Spin the wheel for a free perk, reserve your table, and enjoy cocktails, live music & Sunday brunch."
   path="/"
 >
+  <!-- 1. Hero — Dark -->
   <Hero />
 
-  <!-- Spin the Wheel -->
-  <section id="wheel" class="section-padding bg-moon-bg/80 scroll-mt-20">
+  <!-- Spin the Wheel — Dark -->
+  <section id="wheel" class="section-padding bg-moon-bg scroll-mt-20">
     <div class="container-moon">
       <div class="reveal mb-12 text-center">
         <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">Spin &amp; Win</p>
         <h2 class="heading-section text-moon-cream mb-4">Spin the Moon</h2>
-        <p class="mx-auto max-w-lg text-moon-cream/60">
+        <p class="mx-auto max-w-lg text-[#F5E8D8]/80">
           Every reservation comes with a celestial perk. Give the wheel a spin and lock in your table.
         </p>
       </div>
@@ -33,30 +35,41 @@ import { blogPosts } from '../data/mock';
     </div>
   </section>
 
-  <EventsGrid />
-  <MenuPreview />
-
+  <!-- 2. About — Light Cream -->
   <AboutStrip />
 
-  <!-- Blog preview -->
-  <section class="section-padding bg-moon-surface/20">
+  <!-- 3. Menu — Dark Olive -->
+  <MenuPreview />
+
+  <!-- 4. Events — Warm Orange Gradient -->
+  <EventsGrid />
+
+  <!-- 5. Blog / Guides — Light Cream (testimonials-style) -->
+  <section class="section-padding bg-moon-cream">
     <div class="container-moon">
       <div class="reveal mb-12 flex flex-col items-center justify-between gap-4 sm:flex-row">
         <div>
-          <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">From the Blog</p>
-          <h2 class="heading-section text-moon-cream">Vizag eats &amp; bar guides</h2>
+          <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3 flex items-center gap-2">
+            <span class="inline-block h-px w-8 bg-moon-sand" aria-hidden="true"></span>
+            From the Blog
+          </p>
+          <h2 class="heading-section text-moon-olive">Vizag eats &amp; bar guides</h2>
         </div>
-        <a href="/blog" class="btn-secondary">All posts</a>
+        <a href="/blog" class="btn-olive">All posts</a>
       </div>
       <div class="grid gap-6 md:grid-cols-3">
         {blogPosts.map((post) => (
           <div class="reveal">
-            <BlogCard {...post} />
+            <BlogCard {...post} variant="light" />
           </div>
         ))}
       </div>
     </div>
   </section>
 
+  <!-- 6. Gallery — Pure Dark -->
+  <Gallery />
+
+  <!-- 7. Contact / Visit — Olive -->
   <VisitUs />
 </BaseLayout>

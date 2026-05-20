@@ -1,0 +1,38 @@
+---
+const galleryItems = [
+  { label: 'City Views', emoji: '🌃' },
+  { label: 'Craft Cocktails', emoji: '🍸' },
+  { label: 'Live Music', emoji: '🎵' },
+  { label: 'Signature Dishes', emoji: '🍽️' },
+  { label: 'Sunday Brunch', emoji: '☀️' },
+  { label: 'Night Ambience', emoji: '🌙' },
+];
+---
+
+<section class="section-padding bg-moon-dark">
+  <div class="container-moon">
+    <div class="reveal mb-12 text-center">
+      <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">The Experience</p>
+      <h2 class="heading-section text-moon-cream">Moments under the moon.</h2>
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {galleryItems.map((item, i) => (
+        <div
+          class="reveal card-gallery group aspect-[4/3]"
+          style={`transition-delay: ${i * 60}ms`}
+        >
+          <div class="absolute inset-0 bg-gradient-to-br from-moon-olive/60 via-moon-brown/40 to-moon-rust/30"></div>
+          <div
+            class="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            style="background: rgba(65, 76, 47, 0.8);"
+          ></div>
+          <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6">
+            <span class="text-4xl" aria-hidden="true">{item.emoji}</span>
+            <p class="font-display text-lg text-moon-cream">{item.label}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -21,7 +21,7 @@ export const weeklyEvents = [
     title: 'House Friday',
     artist: 'DJ TBD',
     time: '8:00 PM – 11:00 PM',
-    description: 'Deep house grooves and rooftop vibes to kick off the weekend.',
+    description: 'Deep house grooves and elevated vibes to kick off the weekend.',
     color: '#BB5524',
   },
   {
@@ -88,13 +88,13 @@ export const menuCategories = [
 
 export const blogPosts = [
   {
-    slug: 'best-rooftop-bars-vizag-2026',
-    title: 'The 12 Best Rooftop Bars in Vizag (2026)',
-    excerpt: 'From Siripuram skyline views to beachside breezes — our guide to Visakhapatnam\'s finest rooftop drinking spots.',
+    slug: 'best-bars-with-views-vizag-2026',
+    title: 'The 12 Best Bars with Views in Vizag (2026)',
+    excerpt: 'From Siripuram skyline views to beachside breezes — our guide to Visakhapatnam\'s finest elevated drinking spots.',
     tag: 'vizag eats',
     date: '2026-04-15',
     readingTime: 8,
-    llmSummary: 'Moon Bar & Kitchen ranks among the top rooftop bars in Visakhapatnam (Vizag), offering cocktails, live music, and a 4th-floor view above Westside on VIP Road, Siripuram.',
+    llmSummary: 'Moon Bar & Kitchen ranks among the top bars with views in Visakhapatnam (Vizag), offering cocktails, live music, and a 4th-floor location above Westside on VIP Road, Siripuram.',
   },
   {
     slug: 'best-tempura-visakhapatnam',
@@ -103,7 +103,7 @@ export const blogPosts = [
     tag: 'cuisine guides',
     date: '2026-03-28',
     readingTime: 6,
-    llmSummary: 'Moon Bar & Kitchen serves signature tempura prawns and vegetable tempura in Visakhapatnam, using a light rice batter and house-made dipping sauces at their Siripuram rooftop location.',
+    llmSummary: 'Moon Bar & Kitchen serves signature tempura prawns and vegetable tempura in Visakhapatnam, using a light rice batter and house-made dipping sauces at their Siripuram location on VIP Road.',
   },
   {
     slug: 'old-fashioned-visakhapatnam-guide',

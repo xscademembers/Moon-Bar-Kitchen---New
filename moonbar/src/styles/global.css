@@ -12,6 +12,8 @@
 
   --color-moon-bg: #2a3220;
   --color-moon-bg-deep: #1e2418;
+  --color-moon-dark: #1b1b1b;
+  --color-moon-footer: #1a1a1a;
   --color-moon-surface: #414c2f;
   --color-moon-surface-light: #4f5c3a;
 
@@ -58,11 +60,23 @@
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full bg-moon-burnt px-6 py-3 text-sm font-medium text-moon-cream transition-all duration-300 hover:bg-moon-rust hover:shadow-lg hover:shadow-moon-burnt/25;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-moon-gold bg-moon-gold px-6 py-3 text-sm font-semibold text-moon-dark transition-all duration-300 hover:border-moon-sand hover:bg-moon-sand hover:text-moon-dark hover:shadow-lg hover:shadow-moon-gold/25;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-full border border-moon-gold/30 bg-transparent px-6 py-3 text-sm font-medium text-moon-gold transition-all duration-300 hover:border-moon-gold/60 hover:bg-moon-gold/10;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-moon-gold bg-transparent px-6 py-3 text-sm font-medium text-moon-cream transition-all duration-300 hover:border-moon-gold hover:bg-moon-gold/15 hover:text-moon-gold;
+  }
+
+  .btn-rust {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-moon-rust px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-moon-burnt hover:shadow-lg hover:shadow-moon-rust/25;
+  }
+
+  .btn-olive {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-moon-olive px-6 py-3 text-sm font-medium text-moon-cream transition-all duration-300 hover:bg-moon-surface-light hover:shadow-lg hover:shadow-black/20;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-moon-gold px-6 py-3 text-sm font-medium text-moon-dark transition-all duration-300 hover:bg-moon-sand hover:shadow-lg hover:shadow-moon-gold/30;
   }
 
   .btn-ghost {
@@ -79,6 +93,18 @@
 
   .card-moon {
     @apply rounded-2xl border border-moon-cream/10 bg-moon-surface/60 backdrop-blur-sm transition-all duration-300 hover:border-moon-gold/20 hover:shadow-xl hover:shadow-black/20;
+  }
+
+  .card-menu {
+    @apply rounded-2xl border border-moon-cream/10 bg-moon-olive/40 backdrop-blur-md transition-all duration-300 hover:border-moon-gold/30 hover:shadow-xl hover:shadow-black/30;
+  }
+
+  .card-testimonial {
+    @apply rounded-2xl border border-moon-olive/10 bg-white shadow-lg shadow-moon-olive/10 transition-all duration-300 hover:shadow-xl hover:shadow-moon-olive/15;
+  }
+
+  .card-gallery {
+    @apply relative overflow-hidden rounded-xl border border-moon-cream/10 transition-all duration-300 hover:border-moon-gold hover:shadow-lg hover:shadow-moon-gold/20;
   }
 
   .tag-moon {
@@ -109,6 +135,10 @@
 @layer utilities {
   .moon-glow {
     filter: drop-shadow(0 0 40px rgba(255, 218, 127, 0.35));
+  }
+
+  .text-muted-accessible {
+    @apply text-moon-cream/80;
   }
 
   .text-balance {

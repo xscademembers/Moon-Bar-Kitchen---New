@@ -8,7 +8,7 @@ const icons: Record<string, string> = {
 };
 ---
 
-<section class="section-padding">
+<section class="section-padding bg-moon-olive">
   <div class="container-moon">
     <div class="reveal mb-12 text-center">
       <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">Our Menu</p>
@@ -19,17 +19,17 @@ const icons: Record<string, string> = {
       {menuCategories.map((cat, i) => (
         <a
           href={`/menu#${cat.slug}`}
-          class="reveal card-moon group block p-8 text-center"
+          class="reveal card-menu group block p-8 text-center"
           style={`transition-delay: ${i * 100}ms`}
         >
           <span class="text-4xl mb-4 block" aria-hidden="true">{icons[cat.slug]}</span>
           <h3 class="font-display text-2xl text-moon-cream group-hover:text-moon-gold transition-colors mb-2">
             {cat.name}
           </h3>
-          <p class="text-sm text-moon-cream/60 mb-4">
+          <p class="text-sm text-moon-gold mb-4 font-accent">
             {cat.items.length} signature items
           </p>
-          <span class="font-accent text-xs uppercase tracking-wider text-moon-gold group-hover:underline">
+          <span class="inline-block rounded-full bg-moon-rust px-5 py-2 text-xs font-accent uppercase tracking-wider text-moon-cream group-hover:bg-moon-burnt transition-colors">
             View {cat.name} →
           </span>
         </a>

@@ -8,7 +8,7 @@ export interface PageMeta {
 
 const SITE_NAME = 'Moon Bar & Kitchen';
 const DEFAULT_DESCRIPTION =
-  'Rooftop resto-bar in Siripuram, Visakhapatnam. Cocktails, live music, Sunday brunch & the best rooftop views in Vizag.';
+  'Elevated resto-bar in Siripuram, Visakhapatnam. Cocktails, live music, Sunday brunch & the best city views in Vizag.';
 
 export function buildTitle(pageTitle?: string): string {
   if (!pageTitle) return `${SITE_NAME} | Best Resto Bar in Vizag`;
