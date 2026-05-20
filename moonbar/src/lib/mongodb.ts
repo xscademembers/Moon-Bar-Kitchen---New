@@ -1,5 +1,5 @@
 import { MongoClient, type Db } from 'mongodb';
-import { MONGODB_URI, MONGODB_DB } from 'astro:env/server';
+import { env } from './env';
 import dns from 'node:dns';
 
 // Some local networks refuse SRV DNS queries, which breaks the mongodb+srv://
@@ -21,15 +21,19 @@ declare global {
 export async function getDb(): Promise<Db> {
   if (db) return db;
 
+  if (!env.mongodbUri) {
+    throw new Error('MONGODB_URI is not configured');
+  }
+
   if (import.meta.env.DEV && global._mongoClient) {
     client = global._mongoClient;
-    db = client.db(MONGODB_DB);
+    db = client.db(env.mongodbDb);
     return db;
   }
 
-  client = new MongoClient(MONGODB_URI);
+  client = new MongoClient(env.mongodbUri);
   await client.connect();
-  db = client.db(MONGODB_DB);
+  db = client.db(env.mongodbDb);
 
   if (import.meta.env.DEV) {
     global._mongoClient = client;

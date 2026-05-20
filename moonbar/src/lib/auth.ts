@@ -1,9 +1,9 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
-import { ADMIN_USERNAME, ADMIN_PASSWORD, SESSION_SECRET } from 'astro:env/server';
+import { env } from './env';
 
 export function verifyAdminLogin(username: string, password: string): boolean {
-  if (!ADMIN_PASSWORD) return false;
-  return safeEqual(username, ADMIN_USERNAME) && safeEqual(password, ADMIN_PASSWORD);
+  if (!env.adminPassword) return false;
+  return safeEqual(username, env.adminUsername) && safeEqual(password, env.adminPassword);
 }
 
 function safeEqual(a: string, b: string): boolean {
@@ -17,7 +17,7 @@ function safeEqual(a: string, b: string): boolean {
 
 export function createSessionToken(): string {
   const payload = `admin:${Date.now()}`;
-  const sig = createHmac('sha256', SESSION_SECRET).update(payload).digest('hex');
+  const sig = createHmac('sha256', env.sessionSecret).update(payload).digest('hex');
   return `${payload}.${sig}`;
 }
 
@@ -34,7 +34,7 @@ export function verifySessionToken(token: string | undefined): boolean {
   if (Number.isNaN(timestamp)) return false;
   if (Date.now() - timestamp > SESSION_MAX_AGE * 1000) return false;
 
-  const expected = createHmac('sha256', SESSION_SECRET).update(payload).digest('hex');
+  const expected = createHmac('sha256', env.sessionSecret).update(payload).digest('hex');
   if (sig.length !== expected.length) return false;
 
   try {

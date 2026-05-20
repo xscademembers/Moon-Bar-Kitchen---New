@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig, envField } from 'astro/config';
+import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
@@ -18,13 +18,4 @@ export default defineConfig({
       filter: (page) => !page.includes('/admin'),
     }),
   ],
-  env: {
-    schema: {
-      MONGODB_URI: envField.string({ context: 'server', access: 'secret' }),
-      MONGODB_DB: envField.string({ context: 'server', access: 'secret', default: 'moonbar' }),
-      ADMIN_USERNAME: envField.string({ context: 'server', access: 'secret', default: 'admin' }),
-      ADMIN_PASSWORD: envField.string({ context: 'server', access: 'secret' }),
-      SESSION_SECRET: envField.string({ context: 'server', access: 'secret' }),
-    },
-  },
 });
