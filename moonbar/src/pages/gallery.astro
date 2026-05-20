@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GalleryGrid from '../components/GalleryGrid.astro';
+---
+
+<BaseLayout
+  title="Gallery"
+  description="Photos and moments from Moon Bar & Kitchen, Visakhapatnam — city views, craft cocktails, signature dishes, live music and events at our Siripuram resto-bar."
+  path="/gallery"
+>
+  <section class="section-padding bg-moon-dark pt-32">
+    <div class="container-moon">
+      <div class="reveal mb-16 text-center">
+        <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">The Experience</p>
+        <h1 class="heading-display text-moon-cream mb-4">Moments under the moon.</h1>
+        <p class="mx-auto max-w-xl text-moon-cream/80">
+          City views, craft cocktails, signature plates, and live nights — a glimpse of Moon Bar & Kitchen in Siripuram, Vizag.
+        </p>
+      </div>
+
+      <GalleryGrid showFilters={true} heading={false} />
+    </div>
+  </section>
+
+  <section class="section-padding bg-moon-olive">
+    <div class="container-moon reveal text-center">
+      <h2 class="font-display text-2xl text-moon-cream mb-4">Experience it in person</h2>
+      <p class="text-moon-cream/80 mb-8 max-w-lg mx-auto">
+        Every night at Moon Bar is worth capturing. Reserve your table and spin the moon for a free perk.
+      </p>
+      <a href="/#wheel" class="btn-gold">Reserve a Table</a>
+    </div>
+  </section>
+</BaseLayout>
