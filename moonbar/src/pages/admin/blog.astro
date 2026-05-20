@@ -1,0 +1,12 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import AdminBlog from '../../components/admin/AdminBlog';
+---
+
+<AdminLayout title="Blog">
+  <h1 class="mb-2 font-serif text-3xl text-[#ffda7f]">Blog Posts</h1>
+  <p class="mb-8 text-[#f9e1cd]/80">Create, publish, or delete blog posts.</p>
+  <AdminBlog client:load />
+</AdminLayout>

@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogCard from '../../components/BlogCard.astro';
-import { blogPosts } from '../../data/mock';
+import { fetchBlogPosts } from '../../lib/fetch-content';
 
+const blogPosts = await fetchBlogPosts(true);
 const tags = [...new Set(blogPosts.map((p) => p.tag))];
 ---
 
@@ -16,7 +17,7 @@ const tags = [...new Set(blogPosts.map((p) => p.tag))];
       <div class="reveal mb-16 text-center">
         <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">Moon Bar Journal</p>
         <h1 class="heading-display text-moon-cream mb-4">Vizag Eats &amp; Bar Guides</h1>
-        <p class="mx-auto max-w-xl text-moon-cream/60">
+        <p class="mx-auto max-w-xl text-moon-cream/80">
           Local food guides, cocktail education, and stories from Visakhapatnam's bar scene.
         </p>
       </div>
@@ -24,7 +25,7 @@ const tags = [...new Set(blogPosts.map((p) => p.tag))];
       <div class="reveal mb-10 flex flex-wrap justify-center gap-2">
         <span class="tag-moon">All</span>
         {tags.map((tag) => (
-          <span class="rounded-full border border-moon-cream/20 px-4 py-1.5 text-xs font-accent uppercase tracking-wider text-moon-cream/60">
+          <span class="rounded-full border border-moon-cream/20 px-4 py-1.5 text-xs font-accent uppercase tracking-wider text-moon-cream/80">
             {tag}
           </span>
         ))}

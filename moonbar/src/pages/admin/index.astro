@@ -1,0 +1,41 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import { getDb, COLLECTIONS } from '../../lib/mongodb';
+
+let reservationCount = 0;
+let galleryCount = 0;
+let blogCount = 0;
+
+try {
+  const db = await getDb();
+  [reservationCount, galleryCount, blogCount] = await Promise.all([
+    db.collection(COLLECTIONS.reservations).countDocuments(),
+    db.collection(COLLECTIONS.gallery).countDocuments(),
+    db.collection(COLLECTIONS.blog_posts).countDocuments(),
+  ]);
+} catch {
+  // DB not connected yet
+}
+---
+
+<AdminLayout title="Dashboard">
+  <h1 class="mb-2 font-serif text-3xl text-[#ffda7f]">Dashboard</h1>
+  <p class="mb-10 text-[#f9e1cd]/80">Welcome back. Manage your Moon Bar content below.</p>
+
+  <div class="grid gap-6 sm:grid-cols-3">
+    <a href="/admin/reservations" class="rounded-2xl border border-[#f9e1cd]/10 bg-[#414c2f] p-6 transition-colors hover:border-[#ffda7f]/30">
+      <p class="text-3xl font-semibold text-[#ffda7f]">{reservationCount}</p>
+      <p class="mt-2 text-sm text-[#f9e1cd]/80">Reservations</p>
+    </a>
+    <a href="/admin/gallery" class="rounded-2xl border border-[#f9e1cd]/10 bg-[#414c2f] p-6 transition-colors hover:border-[#ffda7f]/30">
+      <p class="text-3xl font-semibold text-[#ffda7f]">{galleryCount}</p>
+      <p class="mt-2 text-sm text-[#f9e1cd]/80">Gallery items</p>
+    </a>
+    <a href="/admin/blog" class="rounded-2xl border border-[#f9e1cd]/10 bg-[#414c2f] p-6 transition-colors hover:border-[#ffda7f]/30">
+      <p class="text-3xl font-semibold text-[#ffda7f]">{blogCount}</p>
+      <p class="mt-2 text-sm text-[#f9e1cd]/80">Blog posts</p>
+    </a>
+  </div>
+</AdminLayout>

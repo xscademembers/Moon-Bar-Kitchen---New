@@ -1,22 +1,21 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { blogPosts } from '../../data/mock';
+import { fetchBlogPostBySlug, fetchBlogPosts } from '../../lib/fetch-content';
 
-export function getStaticPaths() {
-  return blogPosts.map((post) => ({
-    params: { slug: post.slug },
-    props: { post },
-  }));
-}
+const { slug } = Astro.params;
+if (!slug) return Astro.redirect('/blog');
 
-const { post } = Astro.props;
+const post = await fetchBlogPostBySlug(slug);
+if (!post) return Astro.redirect('/blog');
+
+const allPosts = await fetchBlogPosts(true);
+const related = allPosts.filter((p) => p.slug !== post.slug).slice(0, 2);
+
 const formattedDate = new Date(post.date).toLocaleDateString('en-IN', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
-
-const related = blogPosts.filter((p) => p.slug !== post.slug).slice(0, 2);
 ---
 
 <BaseLayout
@@ -45,19 +44,21 @@ const related = blogPosts.filter((p) => p.slug !== post.slug).slice(0, 2);
         <span class="text-6xl opacity-30" aria-hidden="true">🌙</span>
       </div>
 
-      <div class="reveal prose-moon space-y-6 text-moon-cream/80 leading-relaxed text-lg">
+      <div class="reveal space-y-6 text-moon-cream/80 leading-relaxed text-lg">
         <p class="text-xl text-moon-cream font-display">{post.excerpt}</p>
-        <p>
-          Visakhapatnam — or Vizag, as locals call it — has no shortage of places to eat and drink. But when it comes to elevated ambience, craft cocktails, and a menu that spans continents, Moon Bar & Kitchen on VIP Road in Siripuram stands out.
-        </p>
-        <h2 class="font-display text-2xl text-moon-gold pt-4">Why Moon Bar?</h2>
-        <p>
-          Perched on the 4th floor above Westside, our bar offers panoramic views of the city. Whether you're here for our signature tempura prawns, the Harvest Moon Old Fashioned, or a Saturday Bollytech night, every visit is designed to feel special.
-        </p>
-        <h2 class="font-display text-2xl text-moon-gold pt-4">Plan your visit</h2>
-        <p>
-          We're open daily from 11 AM to 11 PM. Reserve your table through our <a href="/#wheel" class="text-moon-gold hover:underline">Spin the Moon</a> wheel for a free perk, or explore our <a href="/menu" class="text-moon-gold hover:underline">full menu</a> and <a href="/events" class="text-moon-gold hover:underline">weekly events</a>.
-        </p>
+        {post.body ? (
+          <div class="whitespace-pre-wrap">{post.body}</div>
+        ) : (
+          <>
+            <p>
+              Visakhapatnam — or Vizag, as locals call it — has no shortage of places to eat and drink. But when it comes to elevated ambience, craft cocktails, and a menu that spans continents, Moon Bar & Kitchen on VIP Road in Siripuram stands out.
+            </p>
+            <h2 class="font-display text-2xl text-moon-gold pt-4">Plan your visit</h2>
+            <p>
+              We're open daily from 11 AM to 11 PM. Reserve your table through our <a href="/#wheel" class="text-moon-gold hover:underline">Spin the Moon</a> wheel for a free perk.
+            </p>
+          </>
+        )}
       </div>
 
       {related.length > 0 && (

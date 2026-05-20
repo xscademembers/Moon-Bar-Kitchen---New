@@ -1,6 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GalleryGrid from '../components/GalleryGrid.astro';
+import { fetchGalleryItems } from '../lib/fetch-content';
+
+const items = await fetchGalleryItems();
 ---
 
 <BaseLayout
@@ -18,7 +21,7 @@ import GalleryGrid from '../components/GalleryGrid.astro';
         </p>
       </div>
 
-      <GalleryGrid showFilters={true} heading={false} />
+      <GalleryGrid items={items} showFilters={true} heading={false} />
     </div>
   </section>
 

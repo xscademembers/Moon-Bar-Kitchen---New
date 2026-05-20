@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 
 const STORAGE_KEY = 'moonbar_spin_result';
@@ -35,12 +35,19 @@ function describeArc(cx: number, cy: number, r: number, startAngle: number, endA
 
 export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps) {
   const wheelRef = useRef<SVGGElement>(null);
+  const [hydrated, setHydrated] = useState(false);
   const [spinning, setSpinning] = useState(false);
   const [result, setResult] = useState<{ label: string; perk: string } | null>(null);
   const [showForm, setShowForm] = useState(false);
   const rotationRef = useRef(0);
+  const spinTimeoutRef = useRef<number | null>(null);
+  const pendingRotationRef = useRef<number | null>(null);
 
   const segmentAngle = 360 / options.length;
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   // Restore previous spin so a page refresh doesn't blank the prize.
   useEffect(() => {
@@ -50,15 +57,26 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
       const saved = JSON.parse(raw) as { label: string; perk: string; rotation?: number };
       if (saved?.label && saved?.perk) {
         setResult({ label: saved.label, perk: saved.perk });
-        if (typeof saved.rotation === 'number' && wheelRef.current) {
+        if (typeof saved.rotation === 'number') {
           rotationRef.current = saved.rotation;
-          gsap.set(wheelRef.current, { rotation: saved.rotation, transformOrigin: '50% 50%' });
+          pendingRotationRef.current = saved.rotation;
         }
       }
     } catch {
       // ignore corrupted localStorage
     }
   }, []);
+
+  // Apply saved wheel rotation once the SVG ref is mounted.
+  useLayoutEffect(() => {
+    if (!wheelRef.current || pendingRotationRef.current === null) return;
+    gsap.set(wheelRef.current, {
+      rotation: pendingRotationRef.current,
+      svgOrigin: '200 200',
+      transformOrigin: '50% 50%',
+    });
+    pendingRotationRef.current = null;
+  }, [hydrated]);
 
   const reset = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
@@ -67,7 +85,7 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
   }, []);
 
   const spin = useCallback(() => {
-    if (spinning) return;
+    if (!hydrated || spinning) return;
 
     // If a previous result is showing, clicking the button starts a fresh spin.
     if (result) {
@@ -105,27 +123,41 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
       }
     };
 
-    if (prefersReduced || !wheelRef.current) {
+    const finish = () => {
+      if (spinTimeoutRef.current !== null) {
+        window.clearTimeout(spinTimeoutRef.current);
+        spinTimeoutRef.current = null;
+      }
       rotationRef.current = finalRotation;
       setSpinning(false);
       setResult({ label: selected.label, perk: selected.perk });
       persist();
+    };
+
+    if (prefersReduced || !wheelRef.current) {
+      if (wheelRef.current) {
+        gsap.set(wheelRef.current, {
+          rotation: finalRotation,
+          svgOrigin: '200 200',
+          transformOrigin: '50% 50%',
+        });
+      }
+      finish();
       return;
     }
+
+    gsap.killTweensOf(wheelRef.current);
+    spinTimeoutRef.current = window.setTimeout(finish, 7000);
 
     gsap.to(wheelRef.current, {
       rotation: finalRotation,
       duration: 6,
       ease: 'power4.out',
+      svgOrigin: '200 200',
       transformOrigin: '50% 50%',
-      onComplete: () => {
-        rotationRef.current = finalRotation;
-        setSpinning(false);
-        setResult({ label: selected.label, perk: selected.perk });
-        persist();
-      },
+      onComplete: finish,
     });
-  }, [spinning, options, segmentAngle, result]);
+  }, [hydrated, spinning, options, segmentAngle, result]);
 
   return (
     <div className="flex flex-col items-center gap-8">
@@ -203,10 +235,10 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
         <button
           type="button"
           onClick={spin}
-          disabled={spinning}
+          disabled={!hydrated || spinning}
           className="btn-primary !px-10 !py-4 !text-base disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {spinning ? 'The moon is turning…' : result ? 'Spin Again' : 'Spin the Moon'}
+          {!hydrated ? 'Loading…' : spinning ? 'The moon is turning…' : result ? 'Spin Again' : 'Spin the Moon'}
         </button>
         {result && !spinning && (
           <button
@@ -240,10 +272,31 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
       {showForm && (
         <form
           className="w-full max-w-md space-y-4 rounded-2xl border border-moon-cream/10 bg-moon-surface/60 p-6 backdrop-blur-sm"
-          onSubmit={(e) => {
+          onSubmit={async (e) => {
             e.preventDefault();
-            localStorage.setItem('moonbar_reserved', 'true');
-            alert('Booking received — we\'ll WhatsApp you to confirm within 30 minutes.');
+            const form = e.currentTarget;
+            const fd = new FormData(form);
+            try {
+              const res = await fetch('/api/reserve', {
+                method: 'POST',
+                headers: { 'content-type': 'application/json' },
+                body: JSON.stringify({
+                  name: fd.get('name'),
+                  phone: fd.get('phone'),
+                  date: fd.get('date'),
+                  time: fd.get('time'),
+                  people: fd.get('people') || null,
+                  prizeLabel: result?.label || null,
+                  prizePerk: result?.perk || null,
+                }),
+              });
+              if (!res.ok) throw new Error('Failed');
+              localStorage.setItem('moonbar_reserved', 'true');
+              alert('Booking received — we\'ll WhatsApp you to confirm within 30 minutes.');
+              setShowForm(false);
+            } catch {
+              alert('Something went wrong. Please call us at +91 95871 92999.');
+            }
           }}
         >
           <h3 className="font-display text-xl text-moon-gold">Reserve your table</h3>

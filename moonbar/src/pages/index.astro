@@ -8,7 +8,9 @@ import EventsGrid from '../components/EventsGrid.astro';
 import BlogCard from '../components/BlogCard.astro';
 import Gallery from '../components/Gallery.astro';
 import VisitUs from '../components/VisitUs.astro';
-import { blogPosts } from '../data/mock';
+import { fetchBlogPosts } from '../lib/fetch-content';
+
+const blogPosts = (await fetchBlogPosts(true)).slice(0, 3);
 ---
 
 <BaseLayout
@@ -29,8 +31,8 @@ import { blogPosts } from '../data/mock';
           Every reservation comes with a celestial perk. Give the wheel a spin and lock in your table.
         </p>
       </div>
-      <div class="reveal flex justify-center">
-        <SpinWheel client:visible />
+      <div class="flex justify-center">
+        <SpinWheel client:load />
       </div>
     </div>
   </section>

@@ -1,8 +1,10 @@
 ---
 import { galleryItems, type GalleryItem } from '../data/gallery';
 
+type GridItem = GalleryItem & { imageUrl?: string };
+
 interface Props {
-  items?: GalleryItem[];
+  items?: GridItem[];
   showFilters?: boolean;
   heading?: boolean;
 }
@@ -58,17 +60,25 @@ const categories = [
         data-category={item.category}
         style={`transition-delay: ${i * 40}ms`}
       >
-        <div class="absolute inset-0 bg-gradient-to-br from-moon-olive/60 via-moon-brown/40 to-moon-rust/30" aria-hidden="true"></div>
+        <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
+          {item.imageUrl ? (
+            <img src={item.imageUrl} alt={item.label} class="h-full w-full object-cover" loading="lazy" />
+          ) : (
+            <div class="h-full w-full bg-gradient-to-br from-moon-olive/60 via-moon-brown/40 to-moon-rust/30"></div>
+          )}
+        </div>
+        <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center">
+          {!item.imageUrl && (
+            <span class="text-4xl transition-transform duration-300 group-hover:scale-110" aria-hidden="true">{item.emoji}</span>
+          )}
+          <p class="font-display text-lg text-moon-cream drop-shadow-md">{item.label}</p>
+        </div>
         <div
           class="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           style="background: rgba(65, 76, 47, 0.8);"
           aria-hidden="true"
         ></div>
-        <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 p-6 text-center">
-          <span class="text-4xl transition-transform duration-300 group-hover:scale-110" aria-hidden="true">{item.emoji}</span>
-          <p class="font-display text-lg text-moon-cream">{item.label}</p>
-        </div>
-        <span class="tag-moon absolute bottom-4 left-1/2 -translate-x-1/2 scale-95 opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
+        <span class="tag-moon absolute bottom-4 left-1/2 z-10 -translate-x-1/2 scale-95 opacity-0 transition-all duration-300 group-hover:scale-100 group-hover:opacity-100">
           {item.category}
         </span>
       </div>

@@ -1,11 +1,15 @@
 ---
 import { galleryPreviewItems } from '../data/gallery';
+import { fetchGalleryItems } from '../lib/fetch-content';
 import GalleryGrid from './GalleryGrid.astro';
+
+const dbItems = await fetchGalleryItems();
+const items = dbItems.length > 6 ? dbItems.slice(0, 6) : dbItems.length > 0 ? dbItems : galleryPreviewItems;
 ---
 
 <section class="section-padding bg-moon-dark">
   <div class="container-moon">
-    <GalleryGrid items={galleryPreviewItems} />
+    <GalleryGrid items={items} />
 
     <div class="reveal mt-10 text-center">
       <a href="/gallery" class="btn-secondary">View Full Gallery</a>
