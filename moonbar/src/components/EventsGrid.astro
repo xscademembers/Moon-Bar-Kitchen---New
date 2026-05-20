@@ -1,0 +1,41 @@
+---
+import { weeklyEvents } from '../data/mock';
+---
+
+<section class="section-padding bg-moon-bg/50">
+  <div class="container-moon">
+    <div class="reveal mb-12 text-center">
+      <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">This Week at Moon Bar</p>
+      <h2 class="heading-section text-moon-cream">Every night has a soundtrack.</h2>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {weeklyEvents.map((event, i) => (
+        <article
+          class="reveal card-moon group overflow-hidden"
+          style={`transition-delay: ${i * 80}ms`}
+        >
+          <div
+            class="h-2 w-full"
+            style={`background: linear-gradient(90deg, ${event.color}, transparent)`}
+          ></div>
+          <div class="p-6">
+            <div class="flex items-center justify-between mb-3">
+              <span class="tag-moon">{event.day}</span>
+              <time class="font-accent text-xs text-moon-sand">{event.time}</time>
+            </div>
+            <h3 class="font-display text-xl text-moon-cream group-hover:text-moon-gold transition-colors mb-2">
+              {event.title}
+            </h3>
+            <p class="text-sm text-moon-sand/80 mb-3">{event.artist}</p>
+            <p class="text-sm text-moon-cream/60 leading-relaxed">{event.description}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="reveal mt-10 text-center">
+      <a href="/events" class="btn-secondary">Full Events Calendar</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,102 @@
+---
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/menu', label: 'Menu' },
+  { href: '/events', label: 'Events' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="fixed inset-x-0 top-0 z-50 transition-all duration-300" id="site-header">
+  <div class="absolute inset-0 bg-moon-bg-deep/80 backdrop-blur-md border-b border-moon-cream/5"></div>
+  <nav class="container-moon relative flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8" aria-label="Main navigation">
+    <a href="/" class="group flex items-center gap-3">
+      <span class="flex h-10 w-10 items-center justify-center rounded-full bg-moon-surface border border-moon-gold/30 text-lg moon-glow" aria-hidden="true">🌙</span>
+      <div class="hidden sm:block">
+        <span class="font-display text-xl text-moon-cream group-hover:text-moon-gold transition-colors">Moon Bar</span>
+        <span class="block font-accent text-[10px] uppercase tracking-[0.2em] text-moon-sand/80">& Kitchen</span>
+      </div>
+    </a>
+
+    <ul class="hidden items-center gap-1 lg:flex">
+      {navLinks.map(({ href, label }) => (
+        <li>
+          <a
+            href={href}
+            class:list={[
+              'rounded-full px-4 py-2 text-sm transition-colors',
+              currentPath === href || (href !== '/' && currentPath.startsWith(href))
+                ? 'text-moon-gold'
+                : 'text-moon-cream/70 hover:text-moon-cream',
+            ]}
+            aria-current={currentPath === href ? 'page' : undefined}
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <div class="flex items-center gap-3">
+      <a href="/#wheel" class="btn-primary hidden sm:inline-flex text-sm !px-5 !py-2.5">
+        Reserve a Table
+      </a>
+      <button
+        type="button"
+        class="lg:hidden flex h-10 w-10 items-center justify-center rounded-full border border-moon-cream/20 text-moon-cream"
+        aria-label="Open menu"
+        aria-expanded="false"
+        id="mobile-menu-btn"
+      >
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div
+    class="lg:hidden hidden border-t border-moon-cream/10 bg-moon-bg-deep/95 backdrop-blur-md"
+    id="mobile-menu"
+  >
+    <ul class="container-moon flex flex-col gap-1 px-4 py-4">
+      {navLinks.map(({ href, label }) => (
+        <li>
+          <a
+            href={href}
+            class="block rounded-lg px-4 py-3 text-moon-cream/80 hover:bg-moon-surface/50 hover:text-moon-gold"
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+      <li class="pt-2">
+        <a href="/#wheel" class="btn-primary w-full">Reserve a Table</a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const header = document.getElementById('site-header');
+
+  btn?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('hidden') === false;
+    btn.setAttribute('aria-expanded', String(open));
+  });
+
+  window.addEventListener('scroll', () => {
+    if (!header) return;
+    if (window.scrollY > 50) {
+      header.classList.add('shadow-lg', 'shadow-black/30');
+    } else {
+      header.classList.remove('shadow-lg', 'shadow-black/30');
+    }
+  });
+</script>

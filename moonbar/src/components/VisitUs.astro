@@ -1,0 +1,48 @@
+---
+import { siteInfo } from '../data/mock';
+---
+
+<section class="section-padding">
+  <div class="container-moon">
+    <div class="reveal mb-12 text-center">
+      <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">Find Us</p>
+      <h2 class="heading-section text-moon-cream">Visit Moon Bar</h2>
+    </div>
+
+    <div class="reveal grid gap-8 lg:grid-cols-2">
+      <div class="card-moon overflow-hidden">
+        <div class="relative aspect-video w-full">
+          <iframe
+            title="Moon Bar & Kitchen on Google Maps"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3800.334282139715!2d83.31132477602908!3d17.72888158321767!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a39439d3b526079%3A0x69251868df10cf60!2sMoon%20Bar%20%26%20Kitchen!5e0!3m2!1sen!2sin!4v1779269792179!5m2!1sen!2sin"
+            class="absolute inset-0 h-full w-full grayscale-[15%]"
+            style="border:0; filter: invert(0.9) hue-rotate(180deg) saturate(0.6) brightness(0.95);"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+
+      <div class="flex flex-col justify-center space-y-6">
+        <div>
+          <h3 class="font-accent text-xs uppercase tracking-[0.2em] text-moon-gold mb-2">Address</h3>
+          <p class="text-moon-cream/80">{siteInfo.address}</p>
+        </div>
+        <div>
+          <h3 class="font-accent text-xs uppercase tracking-[0.2em] text-moon-gold mb-2">Hours</h3>
+          <p class="text-moon-cream/80">{siteInfo.hours}</p>
+        </div>
+        <div>
+          <h3 class="font-accent text-xs uppercase tracking-[0.2em] text-moon-gold mb-2">Contact</h3>
+          <p class="space-y-1">
+            <a href={`tel:${siteInfo.phone.replace(/\s/g, '')}`} class="block text-moon-cream/80 hover:text-moon-gold transition-colors">{siteInfo.phone}</a>
+            <a href={`https://wa.me/${siteInfo.whatsapp}`} class="block text-moon-cream/80 hover:text-moon-gold transition-colors">WhatsApp us</a>
+            <a href={`mailto:${siteInfo.email}`} class="block text-moon-cream/80 hover:text-moon-gold transition-colors">{siteInfo.email}</a>
+          </p>
+        </div>
+        <a href="/contact" class="btn-primary self-start">Get directions</a>
+      </div>
+    </div>
+  </div>
+</section>

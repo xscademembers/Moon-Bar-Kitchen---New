@@ -1,0 +1,40 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+  excerpt: string;
+  tag: string;
+  date: string;
+  readingTime: number;
+}
+
+const { slug, title, excerpt, tag, date, readingTime } = Astro.props;
+const formattedDate = new Date(date).toLocaleDateString('en-IN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<article class="card-moon group flex flex-col overflow-hidden h-full">
+  <div class="h-40 bg-gradient-to-br from-moon-olive via-moon-brown to-moon-burnt/40 relative overflow-hidden">
+    <div class="absolute inset-0 flex items-center justify-center text-5xl opacity-30" aria-hidden="true">🌙</div>
+    <div class="absolute bottom-3 left-4">
+      <span class="tag-moon">{tag}</span>
+    </div>
+  </div>
+  <div class="flex flex-1 flex-col p-6">
+    <div class="mb-3 flex items-center gap-3 text-xs font-accent text-moon-sand">
+      <time datetime={date}>{formattedDate}</time>
+      <span aria-hidden="true">·</span>
+      <span>{readingTime} min read</span>
+    </div>
+    <h3 class="font-display text-xl text-moon-cream group-hover:text-moon-gold transition-colors mb-3">
+      <a href={`/blog/${slug}`}>{title}</a>
+    </h3>
+    <p class="text-sm text-moon-cream/60 leading-relaxed flex-1">{excerpt}</p>
+    <a href={`/blog/${slug}`} class="mt-4 font-accent text-xs uppercase tracking-wider text-moon-gold hover:underline">
+      Read more →
+    </a>
+  </div>
+</article>

@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteInfo } from '../data/mock';
+
+const hours = [
+  { day: 'Monday – Sunday', time: '11:00 AM – 11:00 PM' },
+];
+---
+
+<BaseLayout
+  title="Contact"
+  description="Contact Moon Bar & Kitchen, Visakhapatnam. Address, phone, WhatsApp, hours & directions. 4th Floor VIP Road, Siripuram, Vizag 530003."
+  path="/contact"
+>
+  <section class="section-padding pt-32">
+    <div class="container-moon">
+      <div class="reveal mb-16 text-center">
+        <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">Get in Touch</p>
+        <h1 class="heading-display text-moon-cream mb-4">Visit Us</h1>
+        <p class="mx-auto max-w-xl text-moon-cream/60">
+          We're on the 4th floor above Westside, CBM Compound, Siripuram — one of Vizag's most vibrant neighbourhoods.
+        </p>
+      </div>
+
+      <div class="reveal grid gap-8 lg:grid-cols-2">
+        <div class="space-y-6">
+          <div class="card-moon p-6">
+            <h2 class="font-accent text-xs uppercase tracking-[0.2em] text-moon-gold mb-3">Address</h2>
+            <address class="not-italic text-moon-cream/80 leading-relaxed">{siteInfo.address}</address>
+            <a href={siteInfo.maps} target="_blank" rel="noopener noreferrer" class="mt-4 inline-block text-sm text-moon-gold hover:underline">
+              Open in Google Maps →
+            </a>
+          </div>
+
+          <div class="card-moon p-6">
+            <h2 class="font-accent text-xs uppercase tracking-[0.2em] text-moon-gold mb-3">Contact</h2>
+            <ul class="space-y-2 text-moon-cream/80">
+              <li>
+                <span class="text-moon-sand text-sm">Phone: </span>
+                <a href={`tel:${siteInfo.phone.replace(/\s/g, '')}`} class="hover:text-moon-gold transition-colors">{siteInfo.phone}</a>
+              </li>
+              <li>
+                <span class="text-moon-sand text-sm">WhatsApp: </span>
+                <a href={`https://wa.me/${siteInfo.whatsapp}`} target="_blank" rel="noopener noreferrer" class="hover:text-moon-gold transition-colors">Message us</a>
+              </li>
+              <li>
+                <span class="text-moon-sand text-sm">Email: </span>
+                <a href={`mailto:${siteInfo.email}`} class="hover:text-moon-gold transition-colors">{siteInfo.email}</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="card-moon p-6">
+            <h2 class="font-accent text-xs uppercase tracking-[0.2em] text-moon-gold mb-3">Hours</h2>
+            <table class="w-full text-sm">
+              <tbody>
+                {hours.map(({ day, time }) => (
+                  <tr>
+                    <td class="py-1 text-moon-cream/80">{day}</td>
+                    <td class="py-1 text-right font-accent text-moon-sand">{time}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card-moon overflow-hidden flex flex-col">
+          <div class="relative aspect-square sm:aspect-auto sm:flex-1 sm:min-h-[400px]">
+            <iframe
+              title="Moon Bar & Kitchen on Google Maps"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3800.334282139715!2d83.31132477602908!3d17.72888158321767!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a39439d3b526079%3A0x69251868df10cf60!2sMoon%20Bar%20%26%20Kitchen!5e0!3m2!1sen!2sin!4v1779269792179!5m2!1sen!2sin"
+              class="absolute inset-0 h-full w-full"
+              style="border:0; filter: invert(0.9) hue-rotate(180deg) saturate(0.6) brightness(0.95);"
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+          <a
+            href={siteInfo.maps}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block border-t border-moon-cream/10 bg-moon-surface/40 px-6 py-4 text-center font-accent text-xs uppercase tracking-wider text-moon-gold hover:bg-moon-surface/60 transition-colors"
+          >
+            Open in Google Maps →
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal mt-12 text-center">
+        <a href="/#wheel" class="btn-primary">Spin &amp; Reserve a Table</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

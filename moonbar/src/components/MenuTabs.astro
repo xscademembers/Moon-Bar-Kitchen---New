@@ -1,0 +1,81 @@
+---
+import { menuCategories } from '../data/mock';
+
+interface Props {
+  activeCategory?: string;
+}
+
+const { activeCategory = 'veg' } = Astro.props;
+---
+
+<div class="space-y-12">
+  <!-- Tab navigation -->
+  <div class="flex flex-wrap justify-center gap-2" role="tablist" aria-label="Menu categories">
+    {menuCategories.map((cat) => (
+      <a
+        href={`/menu?cat=${cat.slug}`}
+        role="tab"
+        aria-selected={activeCategory === cat.slug}
+        class:list={[
+          'rounded-full px-6 py-2.5 text-sm font-accent uppercase tracking-wider transition-all',
+          activeCategory === cat.slug
+            ? 'bg-moon-burnt text-moon-cream shadow-lg shadow-moon-burnt/20'
+            : 'border border-moon-cream/20 text-moon-cream/70 hover:border-moon-gold/40 hover:text-moon-gold',
+        ]}
+        id={`tab-${cat.slug}`}
+      >
+        {cat.name}
+      </a>
+    ))}
+  </div>
+
+  {menuCategories.map((cat) => (
+    <section
+      id={cat.slug}
+      class:list={['scroll-mt-28', activeCategory !== cat.slug && 'hidden md:block']}
+      aria-labelledby={`tab-${cat.slug}`}
+    >
+      <h2 class="font-display text-3xl text-moon-gold mb-8 text-center">{cat.name}</h2>
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {cat.items.map((item) => (
+          <article
+            class="card-moon p-6"
+            itemscope
+            itemtype="https://schema.org/MenuItem"
+          >
+            <div class="mb-4 flex h-32 items-center justify-center rounded-xl bg-gradient-to-br from-moon-olive/50 to-moon-brown/30">
+              <span class="text-3xl opacity-40" aria-hidden="true">🍽️</span>
+            </div>
+            <div class="flex items-start justify-between gap-4 mb-2">
+              <h3 class="font-display text-lg text-moon-cream" itemprop="name">{item.name}</h3>
+              <span class="font-accent text-sm text-moon-gold whitespace-nowrap" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                <meta itemprop="priceCurrency" content="INR" />
+                <span itemprop="price">₹{item.price}</span>
+              </span>
+            </div>
+            {item.description && (
+              <p class="text-sm text-moon-cream/60 mb-3" itemprop="description">{item.description}</p>
+            )}
+            {item.tags.length > 0 && (
+              <div class="flex flex-wrap gap-2">
+                {item.tags.map((tag) => (
+                  <span class="rounded-full bg-moon-brown/30 px-2 py-0.5 text-[10px] font-accent uppercase tracking-wider text-moon-sand">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+  ))}
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const cat = params.get('cat');
+  if (cat) {
+    document.getElementById(cat)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+</script>

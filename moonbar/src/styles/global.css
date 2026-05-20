@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+/* Moon Bar & Kitchen — brand palette */
+@theme {
+  --color-moon-olive: #414c2f;
+  --color-moon-burnt: #ba401d;
+  --color-moon-rust: #bb5524;
+  --color-moon-brown: #7f6f34;
+  --color-moon-gold: #ffda7f;
+  --color-moon-cream: #f9e1cd;
+  --color-moon-sand: #e7a356;
+
+  --color-moon-bg: #2a3220;
+  --color-moon-bg-deep: #1e2418;
+  --color-moon-surface: #414c2f;
+  --color-moon-surface-light: #4f5c3a;
+
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-accent: "Space Grotesk", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-moon-bg-deep text-moon-cream font-body antialiased;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 218, 127, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(186, 64, 29, 0.06) 0%, transparent 50%);
+    min-height: 100dvh;
+  }
+
+  ::selection {
+    @apply bg-moon-gold/30 text-moon-cream;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display font-normal tracking-tight;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    @apply outline-none ring-2 ring-moon-gold/60 ring-offset-2 ring-offset-moon-bg-deep;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-moon-burnt px-6 py-3 text-sm font-medium text-moon-cream transition-all duration-300 hover:bg-moon-rust hover:shadow-lg hover:shadow-moon-burnt/25;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-moon-gold/30 bg-transparent px-6 py-3 text-sm font-medium text-moon-gold transition-all duration-300 hover:border-moon-gold/60 hover:bg-moon-gold/10;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm text-moon-cream/80 transition-colors hover:text-moon-gold;
+  }
+
+  .section-padding {
+    @apply px-4 py-20 sm:px-6 lg:px-8 lg:py-28;
+  }
+
+  .container-moon {
+    @apply mx-auto max-w-7xl;
+  }
+
+  .card-moon {
+    @apply rounded-2xl border border-moon-cream/10 bg-moon-surface/60 backdrop-blur-sm transition-all duration-300 hover:border-moon-gold/20 hover:shadow-xl hover:shadow-black/20;
+  }
+
+  .tag-moon {
+    @apply inline-block rounded-full bg-moon-brown/40 px-3 py-1 text-xs font-accent uppercase tracking-wider text-moon-gold;
+  }
+
+  .heading-display {
+    @apply font-display text-4xl leading-tight sm:text-5xl lg:text-6xl;
+  }
+
+  .heading-section {
+    @apply font-display text-3xl sm:text-4xl lg:text-5xl;
+  }
+
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-moon-gold via-moon-sand to-moon-gold bg-clip-text text-transparent;
+  }
+
+  .reveal {
+    @apply translate-y-3 opacity-0 transition-all duration-700 ease-out;
+  }
+
+  .reveal.visible {
+    @apply translate-y-0 opacity-100;
+  }
+}
+
+@layer utilities {
+  .moon-glow {
+    filter: drop-shadow(0 0 40px rgba(255, 218, 127, 0.35));
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}

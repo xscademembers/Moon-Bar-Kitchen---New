@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SpinWheel from '../components/SpinWheel';
+import EventsGrid from '../components/EventsGrid.astro';
+import MenuPreview from '../components/MenuPreview.astro';
+import AboutStrip from '../components/AboutStrip.astro';
+import BlogCard from '../components/BlogCard.astro';
+import VisitUs from '../components/VisitUs.astro';
+import { blogPosts } from '../data/mock';
+---
+
+<BaseLayout
+  title="Best Resto Bar in Vizag"
+  description="Moon Bar & Kitchen — rooftop resto-bar in Siripuram, Visakhapatnam. Spin the wheel for a free perk, reserve your table, and enjoy cocktails, live music & Sunday brunch."
+  path="/"
+>
+  <Hero />
+
+  <!-- Spin the Wheel -->
+  <section id="wheel" class="section-padding bg-moon-bg/80 scroll-mt-20">
+    <div class="container-moon">
+      <div class="reveal mb-12 text-center">
+        <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">Spin &amp; Win</p>
+        <h2 class="heading-section text-moon-cream mb-4">Spin the Moon</h2>
+        <p class="mx-auto max-w-lg text-moon-cream/60">
+          Every reservation comes with a celestial perk. Give the wheel a spin and lock in your table.
+        </p>
+      </div>
+      <div class="reveal flex justify-center">
+        <SpinWheel client:visible />
+      </div>
+    </div>
+  </section>
+
+  <EventsGrid />
+  <MenuPreview />
+
+  <AboutStrip />
+
+  <!-- Blog preview -->
+  <section class="section-padding bg-moon-surface/20">
+    <div class="container-moon">
+      <div class="reveal mb-12 flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <div>
+          <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">From the Blog</p>
+          <h2 class="heading-section text-moon-cream">Vizag eats &amp; bar guides</h2>
+        </div>
+        <a href="/blog" class="btn-secondary">All posts</a>
+      </div>
+      <div class="grid gap-6 md:grid-cols-3">
+        {blogPosts.map((post) => (
+          <div class="reveal">
+            <BlogCard {...post} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <VisitUs />
+</BaseLayout>

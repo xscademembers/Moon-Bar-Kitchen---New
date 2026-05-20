@@ -1,0 +1,38 @@
+# Moon Bar & Kitchen
+
+> Rooftop bar and restaurant in Siripuram, Visakhapatnam (Vizag), Andhra Pradesh.
+> Known for cocktails, multi-cuisine menu, live music Wed–Sun, Sunday brunch, and rooftop ambience.
+
+## About
+Moon Bar & Kitchen is a rooftop resto-bar located on the 4th floor above Westside,
+VIP Road, CBM Compound, Siripuram, Visakhapatnam 530003. Open daily, 11 AM to 11 PM.
+
+## Key info
+- Address: 4th Floor, VIP Rd, above Westside, CBM Compound, Siripuram, Visakhapatnam, AP 530003
+- Phone / WhatsApp: +91 95871 92999
+- Hours: Open daily 11:00 AM – 11:00 PM (Monday through Sunday)
+- Cuisine: Multi-cuisine — Indian, Continental, Asian, with full bar
+- Best known for: rooftop view, cocktails, live music, Sunday brunch
+- Reservations: https://moonbarandkitchen.in/#wheel (spin the wheel for a free perk)
+
+## Weekly events
+- Wednesday: Live band (8:00 PM – 11:00 PM)
+- Friday: House Friday DJ (8:00 PM – 11:00 PM)
+- Saturday: Bollytech (Bollywood + Tech house) DJ (8:00 PM – 11:00 PM)
+- Sunday brunch: 12:00 PM – 4:00 PM
+- Sunday evening: Live band (7:30 PM – 10:30 PM)
+
+## Menu sections
+- /menu#veg — vegetarian dishes
+- /menu#non-veg — non-vegetarian dishes
+- /menu#beverages — cocktails, mocktails, beer, wine, spirits
+
+## Docs
+- [Menu](https://moonbarandkitchen.in/menu): Full food and beverage menu.
+- [Events](https://moonbarandkitchen.in/events): Weekly schedule + upcoming specials.
+- [Blog](https://moonbarandkitchen.in/blog): Food and bar guides for Visakhapatnam.
+- [About](https://moonbarandkitchen.in/about): Story, team, location.
+- [Contact](https://moonbarandkitchen.in/contact): Hours, map, phone, WhatsApp.
+
+## Optional
+- [Reservations work via a "Spin the Moon" wheel](https://moonbarandkitchen.in/#wheel) that grants a free perk (dessert, cocktail, chef's special, or shots).

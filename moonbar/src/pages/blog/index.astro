@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { blogPosts } from '../../data/mock';
+
+const tags = [...new Set(blogPosts.map((p) => p.tag))];
+---
+
+<BaseLayout
+  title="Blog"
+  description="Food guides, cocktail tips & Vizag eats from Moon Bar & Kitchen. Best rooftop bars in Visakhapatnam, tempura guides, and bar culture."
+  path="/blog"
+>
+  <section class="section-padding pt-32">
+    <div class="container-moon">
+      <div class="reveal mb-16 text-center">
+        <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">Moon Bar Journal</p>
+        <h1 class="heading-display text-moon-cream mb-4">Vizag Eats &amp; Bar Guides</h1>
+        <p class="mx-auto max-w-xl text-moon-cream/60">
+          Local food guides, cocktail education, and stories from Visakhapatnam's rooftop scene.
+        </p>
+      </div>
+
+      <div class="reveal mb-10 flex flex-wrap justify-center gap-2">
+        <span class="tag-moon">All</span>
+        {tags.map((tag) => (
+          <span class="rounded-full border border-moon-cream/20 px-4 py-1.5 text-xs font-accent uppercase tracking-wider text-moon-cream/60">
+            {tag}
+          </span>
+        ))}
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {blogPosts.map((post, i) => (
+          <div class="reveal" style={`transition-delay: ${i * 80}ms`}>
+            <BlogCard {...post} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

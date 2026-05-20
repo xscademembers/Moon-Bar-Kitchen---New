@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { weeklyEvents } from '../data/mock';
+---
+
+<BaseLayout
+  title="Events"
+  description="Live music, DJ nights & Sunday brunch at Moon Bar Visakhapatnam. Wednesday live band, Friday House, Saturday Bollytech, and Sunday brunch in Siripuram."
+  path="/events"
+>
+  <section class="section-padding pt-32">
+    <div class="container-moon">
+      <div class="reveal mb-16 text-center">
+        <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">Weekly Schedule</p>
+        <h1 class="heading-display text-moon-cream mb-4">Every night has a soundtrack.</h1>
+        <p class="mx-auto max-w-xl text-moon-cream/60">
+          From live bands to Bollytech Saturdays — there's always something happening under the moon.
+        </p>
+      </div>
+
+      <div class="space-y-6">
+        {weeklyEvents.map((event, i) => (
+          <article
+            class="reveal card-moon flex flex-col overflow-hidden sm:flex-row"
+            style={`transition-delay: ${i * 60}ms`}
+          >
+            <div
+              class="sm:w-48 shrink-0 flex items-center justify-center p-8"
+              style={`background: linear-gradient(135deg, ${event.color}33, ${event.color}11)`}
+            >
+              <div class="text-center">
+                <p class="font-accent text-xs uppercase tracking-[0.2em] text-moon-sand">{event.day}</p>
+                <p class="font-display text-2xl text-moon-gold mt-1">{event.time.split('–')[0].trim()}</p>
+              </div>
+            </div>
+            <div class="flex-1 p-6 sm:p-8">
+              <h2 class="font-display text-2xl text-moon-cream mb-2">{event.title}</h2>
+              <p class="font-accent text-sm text-moon-sand mb-3">{event.artist} · {event.time}</p>
+              <p class="text-moon-cream/70 leading-relaxed">{event.description}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="reveal mt-16 text-center card-moon p-8">
+        <h2 class="font-display text-2xl text-moon-gold mb-4">Reserve for an event night</h2>
+        <p class="text-moon-cream/60 mb-6 max-w-lg mx-auto">
+          Spin the wheel for a free perk when you book your table for any event night.
+        </p>
+        <a href="/#wheel" class="btn-primary">Spin &amp; Reserve</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

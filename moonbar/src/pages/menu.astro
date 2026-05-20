@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MenuTabs from '../components/MenuTabs.astro';
+
+const cat = Astro.url.searchParams.get('cat') ?? 'veg';
+---
+
+<BaseLayout
+  title="Menu"
+  description="Explore Moon Bar & Kitchen's full menu — vegetarian, non-vegetarian dishes and craft cocktails. Best tempura in Visakhapatnam, rooftop dining in Siripuram."
+  path="/menu"
+>
+  <section class="section-padding pt-32">
+    <div class="container-moon">
+      <div class="reveal mb-16 text-center">
+        <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">Food &amp; Drinks</p>
+        <h1 class="heading-display text-moon-cream mb-4">Our Menu</h1>
+        <p class="mx-auto max-w-xl text-moon-cream/60">
+          Multi-cuisine plates and craft cocktails, served on our Siripuram rooftop with views across Visakhapatnam.
+        </p>
+      </div>
+      <MenuTabs activeCategory={cat} />
+    </div>
+  </section>
+</BaseLayout>

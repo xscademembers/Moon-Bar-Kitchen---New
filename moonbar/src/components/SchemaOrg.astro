@@ -1,0 +1,6 @@
+---
+import { restaurantSchema } from '../lib/schema';
+const json = JSON.stringify(restaurantSchema);
+---
+
+<script type="application/ld+json" set:html={json} />
