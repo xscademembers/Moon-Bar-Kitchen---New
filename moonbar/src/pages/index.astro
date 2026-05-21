@@ -49,8 +49,8 @@ const blogPosts = allBlogPosts.slice(0, 3);
   <!-- 4. Events — Warm Orange Gradient -->
   <EventsGrid />
 
-  <!-- 5. Blog / Guides — Light Cream (testimonials-style) -->
-  <section class="section-padding bg-moon-cream">
+  <!-- 5. Blog / Guides — Dark -->
+  <section class="section-padding bg-moon-dark">
     <div class="container-moon">
       <div class="reveal mb-12 flex flex-col items-center justify-between gap-4 sm:flex-row">
         <div>
@@ -58,13 +58,13 @@ const blogPosts = allBlogPosts.slice(0, 3);
             <span class="inline-block h-px w-8 bg-moon-sand" aria-hidden="true"></span>
             From the Blog
           </p>
-          <h2 class="heading-section text-moon-olive">Vizag eats &amp; bar guides</h2>
+          <h2 class="heading-section text-moon-cream">Vizag eats &amp; bar guides</h2>
         </div>
-        <a href="/blog" class="btn-olive">All posts</a>
+        <a href="/blog" class="btn-gold">All posts</a>
       </div>
       <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
         {blogPosts.map((post) => (
-          <BlogCard {...post} variant="light" priority />
+          <BlogCard {...post} priority />
         ))}
       </div>
     </div>
