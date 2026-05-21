@@ -94,7 +94,7 @@ export default function AdminGallery() {
                 <button
                   type="button"
                   onClick={() => remove(item._id)}
-                  className="mt-3 text-xs text-red-400 hover:text-red-300"
+                  className="mt-3 min-h-[44px] px-2 py-2 text-sm text-red-400 hover:text-red-300"
                 >
                   Delete
                 </button>

@@ -19,7 +19,7 @@ const currentPath = Astro.url.pathname;
       <span class="flex h-10 w-10 items-center justify-center rounded-full bg-moon-surface border border-moon-gold/30 text-lg moon-glow" aria-hidden="true">🌙</span>
       <div class="hidden sm:block">
         <span class="font-display text-xl text-moon-cream group-hover:text-moon-gold transition-colors">Moon Bar</span>
-        <span class="block font-accent text-[10px] uppercase tracking-[0.2em] text-moon-sand/80">& Kitchen</span>
+        <span class="block font-accent text-xs uppercase tracking-[0.2em] text-moon-sand/80">& Kitchen</span>
       </div>
     </a>
 
@@ -42,13 +42,16 @@ const currentPath = Astro.url.pathname;
       ))}
     </ul>
 
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a href="/#wheel" class="btn-primary inline-flex text-xs !px-4 !py-2.5 sm:hidden">
+        Reserve
+      </a>
       <a href="/#wheel" class="btn-primary hidden sm:inline-flex text-sm !px-5 !py-2.5">
         Reserve a Table
       </a>
       <button
         type="button"
-        class="lg:hidden flex h-10 w-10 items-center justify-center rounded-full border border-moon-cream/20 text-moon-cream"
+        class="lg:hidden flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full border border-moon-cream/20 text-moon-cream"
         aria-label="Open menu"
         aria-expanded="false"
         id="mobile-menu-btn"
@@ -90,6 +93,13 @@ const currentPath = Astro.url.pathname;
   btn?.addEventListener('click', () => {
     const open = menu?.classList.toggle('hidden') === false;
     btn.setAttribute('aria-expanded', String(open));
+  });
+
+  menu?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      btn?.setAttribute('aria-expanded', 'false');
+    });
   });
 
   window.addEventListener('scroll', () => {

@@ -116,11 +116,11 @@ export default function AdminBlog() {
                 <button
                   type="button"
                   onClick={() => togglePublish(post._id, post.published)}
-                  className="text-xs text-[#ffda7f] hover:underline"
+                  className="min-h-[44px] px-2 py-2 text-sm text-[#ffda7f] hover:underline"
                 >
                   {post.published ? 'Unpublish' : 'Publish'}
                 </button>
-                <button type="button" onClick={() => remove(post._id)} className="text-xs text-red-400 hover:underline">
+                <button type="button" onClick={() => remove(post._id)} className="min-h-[44px] px-2 py-2 text-sm text-red-400 hover:underline">
                   Delete
                 </button>
               </div>

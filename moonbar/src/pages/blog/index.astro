@@ -12,7 +12,7 @@ const tags = [...new Set(blogPosts.map((p) => p.tag))];
   description="Food guides, cocktail tips & Vizag eats from Moon Bar & Kitchen. Best bars with views in Visakhapatnam, tempura guides, and bar culture."
   path="/blog"
 >
-  <section class="section-padding pt-32">
+  <section class="section-padding page-top">
     <div class="container-moon">
       <div class="reveal mb-16 text-center">
         <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">Moon Bar Journal</p>
@@ -31,7 +31,7 @@ const tags = [...new Set(blogPosts.map((p) => p.tag))];
         ))}
       </div>
 
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {blogPosts.map((post) => (
           <BlogCard {...post} priority />
         ))}

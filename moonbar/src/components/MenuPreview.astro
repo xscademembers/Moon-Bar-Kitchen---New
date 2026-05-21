@@ -15,15 +15,15 @@ const icons: Record<string, string> = {
       <h2 class="heading-section text-moon-cream">Crafted for the cosmos.</h2>
     </div>
 
-    <div class="grid gap-6 md:grid-cols-3">
+    <div class="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
       {menuCategories.map((cat, i) => (
         <a
           href={`/menu#${cat.slug}`}
-          class="reveal card-menu group block p-8 text-center"
+          class="reveal card-menu group block p-6 text-center sm:p-8"
           style={`transition-delay: ${i * 100}ms`}
         >
           <span class="text-4xl mb-4 block" aria-hidden="true">{icons[cat.slug]}</span>
-          <h3 class="font-display text-2xl text-moon-cream group-hover:text-moon-gold transition-colors mb-2">
+          <h3 class="font-display text-xl text-moon-cream group-hover:text-moon-gold transition-colors mb-2 sm:text-2xl">
             {cat.name}
           </h3>
           <p class="text-sm text-moon-gold mb-4 font-accent">

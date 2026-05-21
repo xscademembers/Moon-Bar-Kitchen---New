@@ -7,7 +7,7 @@ import Starfield from './Starfield';
 
   <!-- Moon -->
   <div
-    class="pointer-events-none absolute right-[5%] top-[15%] h-48 w-48 rounded-full sm:h-64 sm:w-64 lg:h-80 lg:w-80 moon-glow opacity-90"
+    class="pointer-events-none absolute right-2 top-[8%] h-32 w-32 rounded-full opacity-60 sm:right-[5%] sm:top-[15%] sm:h-48 sm:w-48 sm:opacity-90 lg:h-80 lg:w-80 moon-glow"
     aria-hidden="true"
     id="hero-moon"
   >
@@ -21,7 +21,7 @@ import Starfield from './Starfield';
   </div>
 
   <div class="container-moon relative z-10 px-4 py-20 text-center sm:px-6 lg:px-8">
-    <p class="reveal mb-4 font-accent text-xs uppercase tracking-[0.3em] text-moon-sand">
+    <p class="reveal mb-4 font-accent text-[11px] uppercase tracking-[0.15em] text-moon-sand sm:text-xs sm:tracking-[0.3em]">
       Skyline Resto-Bar · Visakhapatnam
     </p>
     <h1 class="reveal heading-display text-balance text-moon-cream mb-6" style="transition-delay: 100ms">
@@ -30,9 +30,9 @@ import Starfield from './Starfield';
     <p class="reveal mx-auto max-w-xl text-lg text-[#F5E8D8] mb-10" style="transition-delay: 200ms">
       Spin the moon. Claim your perk. Reserve your table.
     </p>
-    <div class="reveal flex flex-col items-center gap-4 sm:flex-row sm:justify-center" style="transition-delay: 300ms">
-      <a href="#wheel" class="btn-primary">Spin &amp; Reserve</a>
-      <a href="/menu" class="btn-secondary">Explore the Menu</a>
+    <div class="reveal flex w-full max-w-sm flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:items-center sm:justify-center sm:gap-4" style="transition-delay: 300ms">
+      <a href="#wheel" class="btn-primary w-full sm:w-auto">Spin &amp; Reserve</a>
+      <a href="/menu" class="btn-secondary w-full sm:w-auto">Explore the Menu</a>
     </div>
   </div>
 

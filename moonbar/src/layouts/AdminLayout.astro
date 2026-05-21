@@ -23,8 +23,8 @@ const current = Astro.url.pathname;
     <title>{title} | Moon Bar Admin</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
-  <body class="min-h-screen bg-[#1a1a1a] text-[#f9e1cd] font-sans antialiased">
-    <div class="flex min-h-screen">
+  <body class="min-h-screen overflow-x-clip bg-[#1a1a1a] text-[#f9e1cd] font-sans antialiased">
+    <div class="flex min-h-screen flex-col lg:flex-row">
       <aside class="hidden w-64 shrink-0 border-r border-[#f9e1cd]/10 bg-[#222] p-6 lg:block">
         <a href="/admin" class="mb-8 block font-serif text-xl text-[#ffda7f]">🌙 Moon Bar Admin</a>
         <nav class="space-y-1">
@@ -43,18 +43,41 @@ const current = Astro.url.pathname;
         <button
           type="button"
           id="admin-logout"
-          class="mt-8 w-full rounded-lg border border-[#f9e1cd]/20 px-4 py-2 text-sm text-[#f9e1cd]/80 hover:border-[#ffda7f] hover:text-[#ffda7f]"
+          class="mt-8 w-full min-h-[44px] rounded-lg border border-[#f9e1cd]/20 px-4 py-2.5 text-sm text-[#f9e1cd]/80 hover:border-[#ffda7f] hover:text-[#ffda7f]"
         >
           Log out
         </button>
       </aside>
 
-      <div class="flex-1">
-        <header class="flex items-center justify-between border-b border-[#f9e1cd]/10 bg-[#222] px-6 py-4 lg:hidden">
-          <span class="font-serif text-lg text-[#ffda7f]">Admin</span>
-          <button type="button" id="admin-logout-mobile" class="text-sm text-[#f9e1cd]/80">Log out</button>
+      <div class="flex min-w-0 flex-1 flex-col">
+        <header class="border-b border-[#f9e1cd]/10 bg-[#222] lg:hidden">
+          <div class="flex items-center justify-between px-4 py-3 sm:px-6">
+            <a href="/admin" class="font-serif text-lg text-[#ffda7f]">🌙 Admin</a>
+            <button
+              type="button"
+              id="admin-logout-mobile"
+              class="min-h-[44px] rounded-lg px-3 py-2 text-sm text-[#f9e1cd]/80 hover:text-[#ffda7f]"
+            >
+              Log out
+            </button>
+          </div>
+          <nav class="flex gap-2 overflow-x-auto px-4 pb-3 sm:px-6" aria-label="Admin navigation">
+            {nav.map(({ href, label }) => (
+              <a
+                href={href}
+                class:list={[
+                  'shrink-0 rounded-full px-4 py-2.5 text-xs font-medium transition-colors sm:text-sm',
+                  current === href
+                    ? 'bg-[#414c2f] text-[#ffda7f]'
+                    : 'border border-[#f9e1cd]/20 text-[#f9e1cd]/80 hover:border-[#ffda7f]/40',
+                ]}
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
         </header>
-        <main class="p-6 lg:p-10">
+        <main class="p-4 sm:p-6 lg:p-10">
           <slot />
         </main>
       </div>

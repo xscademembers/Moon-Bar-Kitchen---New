@@ -160,7 +160,7 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
   }, [hydrated, spinning, options, segmentAngle, result]);
 
   return (
-    <div className="flex flex-col items-center gap-8">
+    <div className="flex w-full max-w-lg flex-col items-center gap-8 px-2 sm:max-w-none sm:px-0">
       <div className="relative">
         {/* Pointer */}
         <div
@@ -254,7 +254,7 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
       <div aria-live="polite" aria-atomic="true" className="min-h-[1.5rem] text-center">
         {result && !showForm && !spinning && (
           <div className="mx-auto max-w-md rounded-2xl border border-moon-gold/30 bg-moon-surface/80 p-6 backdrop-blur-sm">
-            <p className="font-display text-2xl text-moon-gold mb-2">
+            <p className="font-display text-lg text-balance text-moon-gold mb-2 sm:text-2xl">
               Tonight, the moon grants you a free <strong>{result.label}</strong>.
             </p>
             <p className="text-sm text-moon-cream/70 mb-6">{result.perk}</p>
@@ -308,7 +308,7 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
             <label htmlFor="phone" className="mb-1 block text-xs font-accent uppercase tracking-wider text-moon-sand">Phone</label>
             <input id="phone" name="phone" type="tel" required pattern="[6-9][0-9]{9}" className="w-full rounded-lg border border-moon-cream/20 bg-moon-bg-deep/50 px-4 py-2.5 text-moon-cream placeholder:text-moon-cream/30 focus:border-moon-gold/50" placeholder="10-digit mobile" />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label htmlFor="date" className="mb-1 block text-xs font-accent uppercase tracking-wider text-moon-sand">Date</label>
               <input id="date" name="date" type="date" required className="w-full rounded-lg border border-moon-cream/20 bg-moon-bg-deep/50 px-4 py-2.5 text-moon-cream focus:border-moon-gold/50" />

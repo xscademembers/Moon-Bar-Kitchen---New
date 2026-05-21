@@ -265,14 +265,14 @@ export default function AdminMenu() {
                           <button
                             type="button"
                             onClick={() => startEdit(item)}
-                            className="text-xs text-[#ffda7f] hover:underline"
+                            className="min-h-[44px] px-2 py-2 text-sm text-[#ffda7f] hover:underline"
                           >
                             Edit
                           </button>
                           <button
                             type="button"
                             onClick={() => remove(item._id)}
-                            className="text-xs text-red-400 hover:underline"
+                            className="min-h-[44px] px-2 py-2 text-sm text-red-400 hover:underline"
                           >
                             Delete
                           </button>
