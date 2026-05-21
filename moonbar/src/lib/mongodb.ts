@@ -2,12 +2,15 @@ import { MongoClient, type Db } from 'mongodb';
 import { env } from './env';
 import dns from 'node:dns';
 
-// Some local networks refuse SRV DNS queries, which breaks the mongodb+srv://
-// resolution. Point Node's resolver to public DNS so Atlas can be looked up.
-try {
-  dns.setServers(['8.8.8.8', '1.1.1.1', '8.8.4.4']);
-} catch {
-  // setServers may throw on certain platforms; ignore and fall back to system DNS
+// On local dev some networks refuse SRV DNS queries, which breaks the
+// mongodb+srv:// resolution. Point Node's resolver to public DNS only when
+// we're NOT on Vercel (Vercel's runtime has its own resolver).
+if (!process.env.VERCEL) {
+  try {
+    dns.setServers(['8.8.8.8', '1.1.1.1', '8.8.4.4']);
+  } catch {
+    // setServers may throw on certain platforms; ignore and fall back
+  }
 }
 
 let client: MongoClient;
@@ -31,7 +34,11 @@ export async function getDb(): Promise<Db> {
     return db;
   }
 
-  client = new MongoClient(env.mongodbUri);
+  client = new MongoClient(env.mongodbUri, {
+    serverSelectionTimeoutMS: 4000,
+    connectTimeoutMS: 4000,
+    socketTimeoutMS: 8000,
+  });
   await client.connect();
   db = client.db(env.mongodbDb);
 

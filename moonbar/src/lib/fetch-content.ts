@@ -4,7 +4,24 @@ import { blogPosts as fallbackBlog } from '../data/mock';
 
 export type DbGalleryItem = GalleryItem & { imageUrl?: string };
 
-export async function fetchGalleryItems(): Promise<DbGalleryItem[]> {
+// Wrap any promise so a hanging DB call never exceeds the function timeout.
+function withTimeout<T>(p: Promise<T>, ms: number, fallback: T): Promise<T> {
+  return new Promise<T>((resolve) => {
+    const timer = setTimeout(() => resolve(fallback), ms);
+    p.then(
+      (val) => {
+        clearTimeout(timer);
+        resolve(val);
+      },
+      () => {
+        clearTimeout(timer);
+        resolve(fallback);
+      }
+    );
+  });
+}
+
+async function fetchGalleryItemsInner(): Promise<DbGalleryItem[]> {
   try {
     const db = await getDb();
     const docs = await db
@@ -27,7 +44,11 @@ export async function fetchGalleryItems(): Promise<DbGalleryItem[]> {
   }
 }
 
-export async function fetchBlogPosts(publishedOnly = true) {
+export function fetchGalleryItems(): Promise<DbGalleryItem[]> {
+  return withTimeout(fetchGalleryItemsInner(), 5000, fallbackGallery);
+}
+
+async function fetchBlogPostsInner(publishedOnly = true) {
   try {
     const db = await getDb();
     const filter = publishedOnly ? { published: true } : {};
@@ -52,6 +73,10 @@ export async function fetchBlogPosts(publishedOnly = true) {
   } catch {
     return fallbackBlog;
   }
+}
+
+export function fetchBlogPosts(publishedOnly = true) {
+  return withTimeout(fetchBlogPostsInner(publishedOnly), 5000, fallbackBlog);
 }
 
 export async function fetchBlogPostBySlug(slug: string) {
