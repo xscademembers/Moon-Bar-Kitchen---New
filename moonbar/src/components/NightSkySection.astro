@@ -1,0 +1,22 @@
+---
+import Starfield from './Starfield';
+
+interface Props {
+  id?: string;
+  class?: string;
+}
+
+const { id, class: className = '' } = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={['relative overflow-hidden bg-moon-bg-deep', className]}
+  style="background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 218, 127, 0.08) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(186, 64, 29, 0.06) 0%, transparent 50%);"
+>
+  <Starfield client:load />
+
+  <div class="relative z-10">
+    <slot />
+  </div>
+</section>

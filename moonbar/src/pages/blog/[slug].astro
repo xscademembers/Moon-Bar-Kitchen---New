@@ -40,8 +40,21 @@ const formattedDate = new Date(post.date).toLocaleDateString('en-IN', {
         <p class="text-moon-cream/80 leading-relaxed">{post.llmSummary}</p>
       </div>
 
-      <div class="reveal aspect-video rounded-2xl bg-gradient-to-br from-moon-olive via-moon-brown to-moon-burnt/40 mb-12 flex items-center justify-center">
-        <span class="text-6xl opacity-30" aria-hidden="true">🌙</span>
+      <div class="aspect-video rounded-2xl overflow-hidden mb-12">
+        {post.imageUrl ? (
+          <img
+            src={post.imageUrl}
+            alt={post.title}
+            class="h-full w-full object-cover"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        ) : (
+          <div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-moon-olive via-moon-brown to-moon-burnt/40">
+            <span class="text-6xl opacity-30" aria-hidden="true">🌙</span>
+          </div>
+        )}
       </div>
 
       <div class="reveal space-y-6 text-moon-cream/80 leading-relaxed text-lg">

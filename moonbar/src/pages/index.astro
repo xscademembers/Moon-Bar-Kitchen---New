@@ -3,6 +3,7 @@ export const prerender = true;
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import NightSkySection from '../components/NightSkySection.astro';
 import SpinWheel from '../components/SpinWheel';
 import AboutStrip from '../components/AboutStrip.astro';
 import MenuPreview from '../components/MenuPreview.astro';
@@ -23,8 +24,8 @@ const blogPosts = allBlogPosts.slice(0, 3);
   <!-- 1. Hero — Dark -->
   <Hero />
 
-  <!-- Spin the Wheel — Dark -->
-  <section id="wheel" class="section-padding bg-moon-bg scroll-mt-20">
+  <!-- Spin the Wheel — same night-sky + stars as hero -->
+  <NightSkySection id="wheel" class="scroll-mt-20 px-4 py-28 sm:px-6 lg:px-8 lg:py-32">
     <div class="container-moon">
       <div class="reveal mb-12 text-center">
         <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">Spin &amp; Win</p>
@@ -37,7 +38,7 @@ const blogPosts = allBlogPosts.slice(0, 3);
         <SpinWheel client:load />
       </div>
     </div>
-  </section>
+  </NightSkySection>
 
   <!-- 2. About — Light Cream -->
   <AboutStrip />
@@ -63,9 +64,7 @@ const blogPosts = allBlogPosts.slice(0, 3);
       </div>
       <div class="grid gap-6 md:grid-cols-3">
         {blogPosts.map((post) => (
-          <div class="reveal">
-            <BlogCard {...post} variant="light" />
-          </div>
+          <BlogCard {...post} variant="light" priority />
         ))}
       </div>
     </div>

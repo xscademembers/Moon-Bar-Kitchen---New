@@ -53,4 +53,5 @@ export const COLLECTIONS = {
   reservations: 'reservations',
   gallery: 'gallery',
   blog_posts: 'blog_posts',
+  menu_items: 'menu_items',
 } as const;

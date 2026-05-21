@@ -1,6 +1,12 @@
-/** Server-only env access. Uses process.env so Vercel builds don't fail when secrets aren't set at build time. */
+/** Server-only env access. Reads process.env (Vercel) and import.meta.env (Astro dev .env). */
 function read(key: string, fallback = ''): string {
-  return process.env[key] ?? fallback;
+  const fromProcess = process.env[key];
+  if (fromProcess) return fromProcess;
+
+  const fromMeta = (import.meta.env as Record<string, string | undefined>)[key];
+  if (fromMeta) return fromMeta;
+
+  return fallback;
 }
 
 export const env = {

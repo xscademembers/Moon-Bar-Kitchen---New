@@ -1,6 +1,28 @@
 import { getDb, COLLECTIONS } from './mongodb';
 import { galleryItems as fallbackGallery, type GalleryItem } from '../data/gallery';
-import { blogPosts as fallbackBlog } from '../data/mock';
+import { blogPosts as fallbackBlog, menuCategories as fallbackMenuCategories } from '../data/mock';
+
+export type MenuItem = {
+  name: string;
+  description: string;
+  price: number;
+  tags: string[];
+  imageUrl?: string;
+};
+
+export type MenuCategory = {
+  slug: string;
+  name: string;
+  items: MenuItem[];
+};
+
+const MENU_CATEGORY_META: Record<string, string> = {
+  veg: 'Veg',
+  'non-veg': 'Non-Veg',
+  beverages: 'Beverages',
+};
+
+const MENU_CATEGORY_ORDER = ['veg', 'non-veg', 'beverages'];
 
 export type DbGalleryItem = GalleryItem & { imageUrl?: string };
 
@@ -34,7 +56,6 @@ async function fetchGalleryItemsInner(): Promise<DbGalleryItem[]> {
 
     return docs.map((doc) => ({
       id: doc._id.toString(),
-      label: doc.label as string,
       category: doc.category as GalleryItem['category'],
       emoji: (doc.emoji as string) || '🌙',
       imageUrl: (doc.imageUrl as string) || '',
@@ -69,6 +90,7 @@ async function fetchBlogPostsInner(publishedOnly = true) {
       readingTime: (doc.readingTime as number) || 5,
       llmSummary: (doc.llmSummary as string) || (doc.excerpt as string),
       body: (doc.body as string) || '',
+      imageUrl: (doc.imageUrl as string) || '',
     }));
   } catch {
     return fallbackBlog;
@@ -82,4 +104,42 @@ export function fetchBlogPosts(publishedOnly = true) {
 export async function fetchBlogPostBySlug(slug: string) {
   const posts = await fetchBlogPosts(true);
   return posts.find((p) => p.slug === slug) ?? null;
+}
+
+async function fetchMenuCategoriesInner(): Promise<MenuCategory[]> {
+  try {
+    const db = await getDb();
+    const docs = await db
+      .collection(COLLECTIONS.menu_items)
+      .find({})
+      .sort({ category: 1, order: 1, createdAt: 1 })
+      .toArray();
+
+    if (docs.length === 0) return fallbackMenuCategories;
+
+    const grouped: Record<string, MenuItem[]> = {};
+    for (const doc of docs) {
+      const category = doc.category as string;
+      if (!grouped[category]) grouped[category] = [];
+      grouped[category].push({
+        name: doc.name as string,
+        description: (doc.description as string) || '',
+        price: Number(doc.price) || 0,
+        tags: Array.isArray(doc.tags) ? (doc.tags as string[]) : [],
+        imageUrl: (doc.imageUrl as string) || '',
+      });
+    }
+
+    return MENU_CATEGORY_ORDER.filter((slug) => grouped[slug]?.length).map((slug) => ({
+      slug,
+      name: MENU_CATEGORY_META[slug] || slug,
+      items: grouped[slug],
+    }));
+  } catch {
+    return fallbackMenuCategories;
+  }
+}
+
+export function fetchMenuCategories(): Promise<MenuCategory[]> {
+  return withTimeout(fetchMenuCategoriesInner(), 5000, fallbackMenuCategories);
 }

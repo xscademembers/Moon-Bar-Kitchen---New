@@ -1,17 +1,18 @@
 ---
-import { menuCategories } from '../data/mock';
+import type { MenuCategory } from '../lib/fetch-content';
 
 interface Props {
   activeCategory?: string;
+  categories: MenuCategory[];
 }
 
-const { activeCategory = 'veg' } = Astro.props;
+const { activeCategory = 'veg', categories } = Astro.props;
 ---
 
 <div class="space-y-12">
   <!-- Tab navigation -->
   <div class="flex flex-wrap justify-center gap-2" role="tablist" aria-label="Menu categories">
-    {menuCategories.map((cat) => (
+    {categories.map((cat) => (
       <a
         href={`/menu?cat=${cat.slug}`}
         role="tab"
@@ -29,7 +30,7 @@ const { activeCategory = 'veg' } = Astro.props;
     ))}
   </div>
 
-  {menuCategories.map((cat) => (
+  {categories.map((cat) => (
     <section
       id={cat.slug}
       class:list={['scroll-mt-28', activeCategory !== cat.slug && 'hidden md:block']}
@@ -43,8 +44,18 @@ const { activeCategory = 'veg' } = Astro.props;
             itemscope
             itemtype="https://schema.org/MenuItem"
           >
-            <div class="mb-4 flex h-32 items-center justify-center rounded-xl bg-gradient-to-br from-moon-olive/50 to-moon-brown/30">
-              <span class="text-3xl opacity-40" aria-hidden="true">🍽️</span>
+            <div class="mb-4 flex h-32 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-moon-olive/50 to-moon-brown/30">
+              {item.imageUrl ? (
+                <img
+                  src={item.imageUrl}
+                  alt={item.name}
+                  class="h-full w-full object-cover"
+                  loading="eager"
+                  decoding="async"
+                />
+              ) : (
+                <span class="text-3xl opacity-40" aria-hidden="true">🍽️</span>
+              )}
             </div>
             <div class="flex items-start justify-between gap-4 mb-2">
               <h3 class="font-display text-lg text-moon-cream" itemprop="name">{item.name}</h3>

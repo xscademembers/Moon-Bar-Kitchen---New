@@ -56,13 +56,18 @@ const categories = [
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3" id="gallery-grid">
     {items.map((item, i) => (
       <div
-        class="reveal card-gallery group aspect-[4/3] w-full"
+        class="card-gallery group aspect-[4/3] w-full"
         data-category={item.category}
-        style={`transition-delay: ${i * 40}ms`}
       >
         <div class="absolute inset-0 overflow-hidden" aria-hidden="true">
           {item.imageUrl ? (
-            <img src={item.imageUrl} alt={item.label} class="h-full w-full object-cover" loading="lazy" />
+            <img
+              src={item.imageUrl}
+              alt={item.category}
+              class="h-full w-full object-cover"
+              loading={i < 6 ? 'eager' : 'lazy'}
+              decoding="async"
+            />
           ) : (
             <div class="h-full w-full bg-gradient-to-br from-moon-olive/60 via-moon-brown/40 to-moon-rust/30"></div>
           )}
@@ -71,7 +76,6 @@ const categories = [
           {!item.imageUrl && (
             <span class="text-4xl transition-transform duration-300 group-hover:scale-110" aria-hidden="true">{item.emoji}</span>
           )}
-          <p class="font-display text-lg text-moon-cream drop-shadow-md">{item.label}</p>
         </div>
         <div
           class="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"

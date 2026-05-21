@@ -124,11 +124,11 @@
   }
 
   .reveal {
-    @apply translate-y-3 opacity-0 transition-all duration-700 ease-out;
+    @apply translate-y-3 transition-transform duration-500 ease-out;
   }
 
   .reveal.visible {
-    @apply translate-y-0 opacity-100;
+    @apply translate-y-0;
   }
 }
 

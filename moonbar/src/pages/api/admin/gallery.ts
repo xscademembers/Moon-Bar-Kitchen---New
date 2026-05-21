@@ -23,17 +23,16 @@ export const GET: APIRoute = async () => {
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
-    const { label, category, imageUrl, emoji } = body;
+    const { category, imageUrl, emoji } = body;
 
-    if (!label?.trim() || !category) {
-      return new Response(JSON.stringify({ error: 'label and category required' }), { status: 400 });
+    if (!category) {
+      return new Response(JSON.stringify({ error: 'category required' }), { status: 400 });
     }
 
     const db = await getDb();
     const count = await db.collection(COLLECTIONS.gallery).countDocuments();
 
     const doc = {
-      label: String(label).trim(),
       category: String(category),
       imageUrl: imageUrl?.trim() || '',
       emoji: emoji || '🌙',

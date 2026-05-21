@@ -6,10 +6,12 @@ interface Props {
   tag: string;
   date: string;
   readingTime: number;
+  imageUrl?: string;
   variant?: 'dark' | 'light';
+  priority?: boolean;
 }
 
-const { slug, title, excerpt, tag, date, readingTime, variant = 'dark' } = Astro.props;
+const { slug, title, excerpt, tag, date, readingTime, imageUrl, variant = 'dark', priority = false } = Astro.props;
 const formattedDate = new Date(date).toLocaleDateString('en-IN', {
   year: 'numeric',
   month: 'long',
@@ -19,8 +21,20 @@ const isLight = variant === 'light';
 ---
 
 <article class:list={['group flex flex-col overflow-hidden h-full', isLight ? 'card-testimonial' : 'card-moon']}>
-  <div class="h-40 bg-gradient-to-br from-moon-olive via-moon-brown to-moon-burnt/40 relative overflow-hidden shrink-0">
-    <div class="absolute inset-0 flex items-center justify-center text-5xl opacity-30" aria-hidden="true">🌙</div>
+  <div class="h-40 relative overflow-hidden shrink-0">
+    {imageUrl ? (
+      <img
+        src={imageUrl}
+        alt=""
+        class="h-full w-full object-cover"
+        loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
+      />
+    ) : (
+      <div class="h-full bg-gradient-to-br from-moon-olive via-moon-brown to-moon-burnt/40">
+        <div class="absolute inset-0 flex items-center justify-center text-5xl opacity-30" aria-hidden="true">🌙</div>
+      </div>
+    )}
     <div class="absolute bottom-3 left-4">
       <span class="tag-moon">{tag}</span>
     </div>

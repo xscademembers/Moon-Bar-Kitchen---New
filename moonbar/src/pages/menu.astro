@@ -1,10 +1,10 @@
 ---
-export const prerender = true;
-
 import BaseLayout from '../layouts/BaseLayout.astro';
 import MenuTabs from '../components/MenuTabs.astro';
+import { fetchMenuCategories } from '../lib/fetch-content';
 
 const cat = Astro.url.searchParams.get('cat') ?? 'veg';
+const menuCategories = await fetchMenuCategories();
 ---
 
 <BaseLayout
@@ -21,7 +21,7 @@ const cat = Astro.url.searchParams.get('cat') ?? 'veg';
           Multi-cuisine plates and craft cocktails, served on the 4th floor in Siripuram with views across Visakhapatnam.
         </p>
       </div>
-      <MenuTabs activeCategory={cat} />
+      <MenuTabs activeCategory={cat} categories={menuCategories} />
     </div>
   </section>
 </BaseLayout>

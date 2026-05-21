@@ -4,16 +4,21 @@ import { siteInfo } from '../data/mock';
 
 <section class="section-padding bg-moon-cream">
   <div class="container-moon">
-    <div class="reveal grid items-center gap-12 lg:grid-cols-2">
+    <div class="grid items-center gap-12 lg:grid-cols-2">
       <div class="relative aspect-[4/3] overflow-hidden rounded-2xl border-2 border-moon-sand/30">
-        <div class="absolute inset-0 bg-gradient-to-br from-moon-olive via-moon-brown to-moon-rust/60"></div>
-        <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
-          <span class="text-6xl mb-4" aria-hidden="true">🌙</span>
-          <p class="font-display text-2xl italic text-moon-cream/90">Above the city lights,<br />under the moon.</p>
-        </div>
+        <img
+          src="/images/our-story.jpg"
+          alt="Moon Bar & Kitchen interior — live stage with MOON neon sign and warm ambient lighting"
+          class="h-full w-full object-cover"
+          loading="eager"
+          fetchpriority="high"
+          decoding="async"
+          width="800"
+          height="600"
+        />
         <div class="absolute bottom-0 left-0 right-0 h-1 bg-moon-sand"></div>
       </div>
-      <div>
+      <div class="reveal">
         <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3 flex items-center gap-2">
           <span class="inline-block h-px w-8 bg-moon-sand" aria-hidden="true"></span>
           Our Story

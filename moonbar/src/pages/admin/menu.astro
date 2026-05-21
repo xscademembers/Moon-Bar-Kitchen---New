@@ -1,0 +1,12 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import AdminMenu from '../../components/admin/AdminMenu';
+---
+
+<AdminLayout title="Menu">
+  <h1 class="mb-2 font-serif text-3xl text-[#ffda7f]">Menu</h1>
+  <p class="mb-8 text-[#f9e1cd]/80">Add, edit, or remove dishes shown on the public menu page.</p>
+  <AdminMenu client:load />
+</AdminLayout>

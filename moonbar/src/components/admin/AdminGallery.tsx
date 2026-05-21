@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 
 interface GalleryItem {
   _id: string;
-  label: string;
   category: string;
   imageUrl: string;
   emoji: string;
@@ -13,7 +12,7 @@ const CATEGORIES = ['ambience', 'food', 'drinks', 'events'];
 export default function AdminGallery() {
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [form, setForm] = useState({ label: '', category: 'ambience', imageUrl: '', emoji: '🌙' });
+  const [form, setForm] = useState({ category: 'ambience', imageUrl: '', emoji: '🌙' });
 
   const load = async () => {
     setLoading(true);
@@ -31,7 +30,7 @@ export default function AdminGallery() {
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(form),
     });
-    setForm({ label: '', category: 'ambience', imageUrl: '', emoji: '🌙' });
+    setForm({ category: 'ambience', imageUrl: '', emoji: '🌙' });
     load();
   };
 
@@ -50,13 +49,6 @@ export default function AdminGallery() {
       <form onSubmit={add} className="rounded-xl border border-[#f9e1cd]/10 bg-[#222] p-6 space-y-4">
         <h2 className="font-serif text-xl text-[#ffda7f]">Add gallery item</h2>
         <div className="grid gap-4 sm:grid-cols-2">
-          <input
-            placeholder="Label"
-            required
-            value={form.label}
-            onChange={(e) => setForm({ ...form, label: e.target.value })}
-            className="rounded-lg border border-[#f9e1cd]/20 bg-[#1a1a1a] px-4 py-2 text-[#f9e1cd]"
-          />
           <select
             value={form.category}
             onChange={(e) => setForm({ ...form, category: e.target.value })}
@@ -92,14 +84,13 @@ export default function AdminGallery() {
             <div key={item._id} className="overflow-hidden rounded-xl border border-[#f9e1cd]/10 bg-[#222]">
               <div className="aspect-video bg-[#414c2f] flex items-center justify-center overflow-hidden">
                 {item.imageUrl ? (
-                  <img src={item.imageUrl} alt={item.label} className="h-full w-full object-cover" />
+                  <img src={item.imageUrl} alt={item.category} className="h-full w-full object-cover" />
                 ) : (
                   <span className="text-4xl">{item.emoji}</span>
                 )}
               </div>
               <div className="p-4">
-                <p className="font-medium text-[#f9e1cd]">{item.label}</p>
-                <p className="text-xs text-[#e7a356] uppercase mt-1">{item.category}</p>
+                <p className="font-medium text-[#f9e1cd] capitalize">{item.category}</p>
                 <button
                   type="button"
                   onClick={() => remove(item._id)}

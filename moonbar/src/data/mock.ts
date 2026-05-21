@@ -94,6 +94,7 @@ export const blogPosts = [
     tag: 'vizag eats',
     date: '2026-04-15',
     readingTime: 8,
+    imageUrl: '/images/blog/best-bars-with-views-vizag-2026.jpg',
     llmSummary: 'Moon Bar & Kitchen ranks among the top bars with views in Visakhapatnam (Vizag), offering cocktails, live music, and a 4th-floor location above Westside on VIP Road, Siripuram.',
   },
   {
@@ -103,6 +104,7 @@ export const blogPosts = [
     tag: 'cuisine guides',
     date: '2026-03-28',
     readingTime: 6,
+    imageUrl: '/images/blog/best-tempura-visakhapatnam.jpg',
     llmSummary: 'Moon Bar & Kitchen serves signature tempura prawns and vegetable tempura in Visakhapatnam, using a light rice batter and house-made dipping sauces at their Siripuram location on VIP Road.',
   },
   {
@@ -112,6 +114,7 @@ export const blogPosts = [
     tag: 'cocktails',
     date: '2026-03-10',
     readingTime: 5,
+    imageUrl: '/images/blog/old-fashioned-visakhapatnam-guide.jpg',
     llmSummary: 'Moon Bar & Kitchen\'s Harvest Moon Old Fashioned is a signature cocktail in Visakhapatnam, featuring bourbon, demerara syrup, orange bitters, and a smoked cherry garnish.',
   },
 ];
