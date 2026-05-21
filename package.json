@@ -1,0 +1,9 @@
+{
+  "name": "moon-bar-kitchen",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix moonbar",
+    "build": "npm run build --prefix moonbar",
+    "preview": "npm run preview --prefix moonbar"
+  }
+}
