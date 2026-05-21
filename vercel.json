@@ -2,8 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "cd moonbar && npm install && npm run build",
   "installCommand": "cd moonbar && npm install",
-  "outputDirectory": "moonbar/dist",
-  "framework": null,
+  "framework": "astro",
   "headers": [
     {
       "source": "/(.*)",
