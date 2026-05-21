@@ -1,4 +1,6 @@
 ---
+export const prerender = true;
+
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import SpinWheel from '../components/SpinWheel';
@@ -8,9 +10,9 @@ import EventsGrid from '../components/EventsGrid.astro';
 import BlogCard from '../components/BlogCard.astro';
 import Gallery from '../components/Gallery.astro';
 import VisitUs from '../components/VisitUs.astro';
-import { fetchBlogPosts } from '../lib/fetch-content';
+import { blogPosts as allBlogPosts } from '../data/mock';
 
-const blogPosts = (await fetchBlogPosts(true)).slice(0, 3);
+const blogPosts = allBlogPosts.slice(0, 3);
 ---
 
 <BaseLayout

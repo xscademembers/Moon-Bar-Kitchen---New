@@ -16,13 +16,14 @@ function safeEqual(a: string, b: string): boolean {
 }
 
 export function createSessionToken(): string {
+  if (!env.sessionSecret) throw new Error('SESSION_SECRET is not configured');
   const payload = `admin:${Date.now()}`;
   const sig = createHmac('sha256', env.sessionSecret).update(payload).digest('hex');
   return `${payload}.${sig}`;
 }
 
 export function verifySessionToken(token: string | undefined): boolean {
-  if (!token) return false;
+  if (!token || !env.sessionSecret) return false;
   const dot = token.lastIndexOf('.');
   if (dot === -1) return false;
 

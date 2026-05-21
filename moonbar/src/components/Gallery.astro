@@ -1,10 +1,8 @@
 ---
 import { galleryPreviewItems } from '../data/gallery';
-import { fetchGalleryItems } from '../lib/fetch-content';
 import GalleryGrid from './GalleryGrid.astro';
 
-const dbItems = await fetchGalleryItems();
-const items = dbItems.length > 6 ? dbItems.slice(0, 6) : dbItems.length > 0 ? dbItems : galleryPreviewItems;
+const items = galleryPreviewItems;
 ---
 
 <section class="section-padding bg-moon-dark">
