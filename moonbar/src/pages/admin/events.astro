@@ -1,0 +1,12 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../layouts/AdminLayout.astro';
+import AdminEvents from '../../components/admin/AdminEvents';
+---
+
+<AdminLayout title="Events">
+  <h1 class="mb-2 font-serif text-3xl text-[#ffda7f]">Weekly Events</h1>
+  <p class="mb-8 text-[#f9e1cd]/80">Manage the events shown on the homepage and the full events page.</p>
+  <AdminEvents client:load />
+</AdminLayout>

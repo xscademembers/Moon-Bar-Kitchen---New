@@ -2,12 +2,20 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import gsap from 'gsap';
 
 const STORAGE_KEY = 'moonbar_spin_result';
+const SPIN_COOLDOWN_MS = 12 * 60 * 60 * 1000;
 
 interface WheelOption {
   id: string;
   label: string;
   perk: string;
   color: string;
+}
+
+interface SavedSpin {
+  label: string;
+  perk: string;
+  rotation?: number;
+  spunAt: number;
 }
 
 interface SpinWheelProps {
@@ -33,11 +41,46 @@ function describeArc(cx: number, cy: number, r: number, startAngle: number, endA
   return `M ${cx} ${cy} L ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 0 ${end.x} ${end.y} Z`;
 }
 
+function readSavedSpin(): SavedSpin | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+
+    const saved = JSON.parse(raw) as Partial<SavedSpin>;
+    if (!saved?.label || !saved?.perk || typeof saved.spunAt !== 'number') {
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+
+    if (Date.now() - saved.spunAt >= SPIN_COOLDOWN_MS) {
+      localStorage.removeItem(STORAGE_KEY);
+      return null;
+    }
+
+    return saved as SavedSpin;
+  } catch {
+    localStorage.removeItem(STORAGE_KEY);
+    return null;
+  }
+}
+
+function formatCooldownRemaining(spunAt: number): string {
+  const msLeft = SPIN_COOLDOWN_MS - (Date.now() - spunAt);
+  if (msLeft <= 0) return '';
+
+  const hours = Math.floor(msLeft / (60 * 60 * 1000));
+  const minutes = Math.ceil((msLeft % (60 * 60 * 1000)) / (60 * 1000));
+
+  if (hours > 0) return `${hours}h ${minutes}m`;
+  return `${minutes}m`;
+}
+
 export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps) {
   const wheelRef = useRef<SVGGElement>(null);
   const [hydrated, setHydrated] = useState(false);
   const [spinning, setSpinning] = useState(false);
   const [result, setResult] = useState<{ label: string; perk: string } | null>(null);
+  const [spunAt, setSpunAt] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
   const rotationRef = useRef(0);
   const spinTimeoutRef = useRef<number | null>(null);
@@ -49,25 +92,19 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
     setHydrated(true);
   }, []);
 
-  // Restore previous spin so a page refresh doesn't blank the prize.
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return;
-      const saved = JSON.parse(raw) as { label: string; perk: string; rotation?: number };
-      if (saved?.label && saved?.perk) {
-        setResult({ label: saved.label, perk: saved.perk });
-        if (typeof saved.rotation === 'number') {
-          rotationRef.current = saved.rotation;
-          pendingRotationRef.current = saved.rotation;
-        }
-      }
-    } catch {
-      // ignore corrupted localStorage
+    const saved = readSavedSpin();
+    if (!saved) return;
+
+    setResult({ label: saved.label, perk: saved.perk });
+    setSpunAt(saved.spunAt);
+
+    if (typeof saved.rotation === 'number') {
+      rotationRef.current = saved.rotation;
+      pendingRotationRef.current = saved.rotation;
     }
   }, []);
 
-  // Apply saved wheel rotation once the SVG ref is mounted.
   useLayoutEffect(() => {
     if (!wheelRef.current || pendingRotationRef.current === null) return;
     gsap.set(wheelRef.current, {
@@ -78,20 +115,8 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
     pendingRotationRef.current = null;
   }, [hydrated]);
 
-  const reset = useCallback(() => {
-    localStorage.removeItem(STORAGE_KEY);
-    setResult(null);
-    setShowForm(false);
-  }, []);
-
   const spin = useCallback(() => {
-    if (!hydrated || spinning) return;
-
-    // If a previous result is showing, clicking the button starts a fresh spin.
-    if (result) {
-      localStorage.removeItem(STORAGE_KEY);
-      setResult(null);
-    }
+    if (!hydrated || spinning || result) return;
 
     setSpinning(true);
 
@@ -99,28 +124,28 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
     const selected = options[segmentIndex];
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Keep jitter well inside the segment so we never visually land on a neighbour.
     const jitter = (Math.random() - 0.5) * (segmentAngle * 0.5);
-
-    // Segment `i` is drawn from angle `i*sa` to `(i+1)*sa`, measured clockwise from
-    // the top (12 o'clock). For the pointer (also at 12 o'clock) to point at the
-    // middle of segment `i` after rotating clockwise by R degrees, we need:
-    //   (i*sa + sa/2 + R) mod 360 === 0
-    // ⇒ R mod 360 === (360 - i*sa - sa/2) mod 360
     const desiredEnd = (360 - segmentIndex * segmentAngle - segmentAngle / 2 + jitter + 360) % 360;
     const currentMod = ((rotationRef.current % 360) + 360) % 360;
     const deltaToTarget = (desiredEnd - currentMod + 360) % 360;
     const finalRotation = rotationRef.current + 360 * 6 + deltaToTarget;
 
     const persist = () => {
+      const now = Date.now();
       try {
         localStorage.setItem(
           STORAGE_KEY,
-          JSON.stringify({ label: selected.label, perk: selected.perk, rotation: finalRotation })
+          JSON.stringify({
+            label: selected.label,
+            perk: selected.perk,
+            rotation: finalRotation,
+            spunAt: now,
+          })
         );
       } catch {
         // storage may be unavailable in private mode — ignore
       }
+      setSpunAt(now);
     };
 
     const finish = () => {
@@ -162,7 +187,6 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
   return (
     <div className="flex w-full max-w-lg flex-col items-center gap-8 px-2 sm:max-w-none sm:px-0">
       <div className="relative">
-        {/* Pointer */}
         <div
           className="absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1"
           aria-hidden="true"
@@ -186,7 +210,7 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
             </filter>
             <radialGradient id="wheelCenter" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="#FFDA7F" />
-              <stop offset="100%" stopColor="#414C2F" />
+              <stop offset="100%" stopColor="#1b1b1b" />
             </radialGradient>
           </defs>
 
@@ -231,33 +255,32 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
         </svg>
       </div>
 
-      <div className="flex flex-wrap items-center justify-center gap-3">
-        <button
-          type="button"
-          onClick={spin}
-          disabled={!hydrated || spinning}
-          className="btn-primary !px-10 !py-4 !text-base disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {!hydrated ? 'Loading…' : spinning ? 'The moon is turning…' : result ? 'Spin Again' : 'Spin the Moon'}
-        </button>
-        {result && !spinning && (
+      {!result && (
+        <div className="flex flex-col items-center gap-3">
           <button
             type="button"
-            onClick={reset}
-            className="btn-ghost !text-sm"
+            onClick={spin}
+            disabled={!hydrated || spinning}
+            className="btn-primary !px-10 !py-4 !text-base disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Reset
+            {!hydrated ? 'Loading…' : spinning ? 'The moon is turning…' : 'Spin the Moon'}
           </button>
-        )}
-      </div>
+          <p className="text-xs text-moon-cream/60">One spin every 12 hours.</p>
+        </div>
+      )}
 
       <div aria-live="polite" aria-atomic="true" className="min-h-[1.5rem] text-center">
         {result && !showForm && !spinning && (
-          <div className="mx-auto max-w-md rounded-2xl border border-moon-gold/30 bg-moon-surface/80 p-6 backdrop-blur-sm">
+          <div className="mx-auto max-w-md rounded-2xl border border-moon-gold/30 bg-black/70 p-6 backdrop-blur-sm">
             <p className="font-display text-lg text-balance text-moon-gold mb-2 sm:text-2xl">
               Tonight, the moon grants you a free <strong>{result.label}</strong>.
             </p>
-            <p className="text-sm text-moon-cream/70 mb-6">{result.perk}</p>
+            <p className="text-sm text-moon-cream/70 mb-4">{result.perk}</p>
+            {spunAt && (
+              <p className="text-xs text-moon-cream/50 mb-6">
+                Your perk is saved. You can spin again in {formatCooldownRemaining(spunAt)}.
+              </p>
+            )}
             <button
               type="button"
               onClick={() => setShowForm(true)}
@@ -271,7 +294,7 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
 
       {showForm && (
         <form
-          className="w-full max-w-md space-y-4 rounded-2xl border border-moon-cream/10 bg-moon-surface/60 p-6 backdrop-blur-sm"
+          className="w-full max-w-md space-y-4 rounded-2xl border border-moon-cream/10 bg-black/60 p-6 backdrop-blur-sm"
           onSubmit={async (e) => {
             e.preventDefault();
             const form = e.currentTarget;
@@ -302,20 +325,20 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
           <h3 className="font-display text-xl text-moon-gold">Reserve your table</h3>
           <div>
             <label htmlFor="name" className="mb-1 block text-xs font-accent uppercase tracking-wider text-moon-sand">Name</label>
-            <input id="name" name="name" required minLength={2} maxLength={60} className="w-full rounded-lg border border-moon-cream/20 bg-moon-bg-deep/50 px-4 py-2.5 text-moon-cream placeholder:text-moon-cream/30 focus:border-moon-gold/50" placeholder="Your name" />
+            <input id="name" name="name" required minLength={2} maxLength={60} className="w-full rounded-lg border border-moon-cream/20 bg-black/40 px-4 py-2.5 text-moon-cream placeholder:text-moon-cream/30 focus:border-moon-gold/50" placeholder="Your name" />
           </div>
           <div>
             <label htmlFor="phone" className="mb-1 block text-xs font-accent uppercase tracking-wider text-moon-sand">Phone</label>
-            <input id="phone" name="phone" type="tel" required pattern="[6-9][0-9]{9}" className="w-full rounded-lg border border-moon-cream/20 bg-moon-bg-deep/50 px-4 py-2.5 text-moon-cream placeholder:text-moon-cream/30 focus:border-moon-gold/50" placeholder="10-digit mobile" />
+            <input id="phone" name="phone" type="tel" required pattern="[6-9][0-9]{9}" className="w-full rounded-lg border border-moon-cream/20 bg-black/40 px-4 py-2.5 text-moon-cream placeholder:text-moon-cream/30 focus:border-moon-gold/50" placeholder="10-digit mobile" />
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label htmlFor="date" className="mb-1 block text-xs font-accent uppercase tracking-wider text-moon-sand">Date</label>
-              <input id="date" name="date" type="date" required className="w-full rounded-lg border border-moon-cream/20 bg-moon-bg-deep/50 px-4 py-2.5 text-moon-cream focus:border-moon-gold/50" />
+              <input id="date" name="date" type="date" required className="w-full rounded-lg border border-moon-cream/20 bg-black/40 px-4 py-2.5 text-moon-cream focus:border-moon-gold/50" />
             </div>
             <div>
               <label htmlFor="time" className="mb-1 block text-xs font-accent uppercase tracking-wider text-moon-sand">Time</label>
-              <select id="time" name="time" required className="w-full rounded-lg border border-moon-cream/20 bg-moon-bg-deep/50 px-4 py-2.5 text-moon-cream focus:border-moon-gold/50">
+              <select id="time" name="time" required className="w-full rounded-lg border border-moon-cream/20 bg-black/40 px-4 py-2.5 text-moon-cream focus:border-moon-gold/50">
                 <option value="19:00">7:00 PM</option>
                 <option value="19:30">7:30 PM</option>
                 <option value="20:00">8:00 PM</option>
@@ -326,7 +349,7 @@ export default function SpinWheel({ options = DEFAULT_OPTIONS }: SpinWheelProps)
           </div>
           <div>
             <label htmlFor="people" className="mb-1 block text-xs font-accent uppercase tracking-wider text-moon-sand">Guests (optional)</label>
-            <input id="people" name="people" type="number" min={1} max={20} className="w-full rounded-lg border border-moon-cream/20 bg-moon-bg-deep/50 px-4 py-2.5 text-moon-cream focus:border-moon-gold/50" placeholder="Number of people" />
+            <input id="people" name="people" type="number" min={1} max={20} className="w-full rounded-lg border border-moon-cream/20 bg-black/40 px-4 py-2.5 text-moon-cream focus:border-moon-gold/50" placeholder="Number of people" />
           </div>
           <label className="flex items-start gap-2 text-xs text-moon-cream/60">
             <input type="checkbox" required className="mt-0.5 accent-moon-burnt" />

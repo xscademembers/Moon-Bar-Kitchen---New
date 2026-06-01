@@ -1,6 +1,16 @@
 import { getDb, COLLECTIONS } from './mongodb';
 import { galleryItems as fallbackGallery, type GalleryItem } from '../data/gallery';
-import { blogPosts as fallbackBlog, menuCategories as fallbackMenuCategories } from '../data/mock';
+import { blogPosts as fallbackBlog, menuCategories as fallbackMenuCategories, weeklyEvents as fallbackEvents } from '../data/mock';
+
+export type WeeklyEvent = {
+  id: string;
+  day: string;
+  title: string;
+  artist: string;
+  time: string;
+  description: string;
+  color: string;
+};
 
 export type MenuItem = {
   name: string;
@@ -67,6 +77,10 @@ async function fetchGalleryItemsInner(): Promise<DbGalleryItem[]> {
 
 export function fetchGalleryItems(): Promise<DbGalleryItem[]> {
   return withTimeout(fetchGalleryItemsInner(), 5000, fallbackGallery);
+}
+
+export function fetchGalleryPreview(limit = 6): Promise<DbGalleryItem[]> {
+  return fetchGalleryItems().then((items) => items.slice(0, limit));
 }
 
 async function fetchBlogPostsInner(publishedOnly = true) {
@@ -142,4 +156,33 @@ async function fetchMenuCategoriesInner(): Promise<MenuCategory[]> {
 
 export function fetchMenuCategories(): Promise<MenuCategory[]> {
   return withTimeout(fetchMenuCategoriesInner(), 5000, fallbackMenuCategories);
+}
+
+async function fetchWeeklyEventsInner(): Promise<WeeklyEvent[]> {
+  try {
+    const db = await getDb();
+    const docs = await db
+      .collection(COLLECTIONS.events)
+      .find({})
+      .sort({ order: 1, createdAt: 1 })
+      .toArray();
+
+    if (docs.length === 0) return fallbackEvents;
+
+    return docs.map((doc) => ({
+      id: doc._id.toString(),
+      day: doc.day as string,
+      title: doc.title as string,
+      artist: (doc.artist as string) || '',
+      time: doc.time as string,
+      description: (doc.description as string) || '',
+      color: (doc.color as string) || '#BB5524',
+    }));
+  } catch {
+    return fallbackEvents;
+  }
+}
+
+export function fetchWeeklyEvents(): Promise<WeeklyEvent[]> {
+  return withTimeout(fetchWeeklyEventsInner(), 5000, fallbackEvents);
 }

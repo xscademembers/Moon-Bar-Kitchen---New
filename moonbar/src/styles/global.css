@@ -134,6 +134,13 @@
   .reveal.visible {
     @apply translate-y-0;
   }
+
+  .night-sky-bg {
+    @apply bg-moon-bg-deep;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 218, 127, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(186, 64, 29, 0.06) 0%, transparent 50%);
+  }
 }
 
 @layer utilities {

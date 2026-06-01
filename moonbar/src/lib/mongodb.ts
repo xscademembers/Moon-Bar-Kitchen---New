@@ -54,4 +54,5 @@ export const COLLECTIONS = {
   gallery: 'gallery',
   blog_posts: 'blog_posts',
   menu_items: 'menu_items',
+  events: 'events',
 } as const;

@@ -1,8 +1,8 @@
 ---
-import { galleryPreviewItems } from '../data/gallery';
 import GalleryGrid from './GalleryGrid.astro';
+import { fetchGalleryPreview } from '../lib/fetch-content';
 
-const items = galleryPreviewItems;
+const items = await fetchGalleryPreview(6);
 ---
 
 <section class="section-padding bg-[#ffffff]">

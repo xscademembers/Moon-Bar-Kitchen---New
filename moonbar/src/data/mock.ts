@@ -121,6 +121,7 @@ export const blogPosts = [
 
 export const siteInfo = {
   name: 'Moon Bar & Kitchen',
+  logo: '/images/moon logo (2).png',
   tagline: 'Make your night written in the stars.',
   address: '4th Floor, VIP Rd, above Westside, CBM Compound, Siripuram, Visakhapatnam, Andhra Pradesh 530003',
   phone: '+91 95871 92999',

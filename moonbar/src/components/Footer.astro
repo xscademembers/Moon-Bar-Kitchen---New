@@ -15,9 +15,16 @@ const footerLinks = [
   <div class="section-padding !pb-12">
     <div class="container-moon grid gap-8 md:grid-cols-2 md:gap-12 lg:grid-cols-4">
       <div class="lg:col-span-1">
-        <a href="/" class="inline-flex items-center gap-3 mb-4">
-          <span class="flex h-10 w-10 items-center justify-center rounded-full bg-moon-olive border border-moon-sand text-lg text-moon-sand">🌙</span>
-          <span class="font-display text-xl text-moon-cream">Moon Bar & Kitchen</span>
+        <a href="/" class="inline-flex items-center mb-5 sm:mb-6">
+          <img
+            src={encodeURI(siteInfo.logo)}
+            alt={siteInfo.name}
+            class="h-16 w-auto max-w-[220px] object-contain sm:h-[4.5rem] md:h-20"
+            width="220"
+            height="80"
+            loading="lazy"
+            decoding="async"
+          />
         </a>
         <p class="text-sm text-moon-cream/80 leading-relaxed">
           Visakhapatnam's elevated resto-bar — cocktails, cuisine & live music under the stars.

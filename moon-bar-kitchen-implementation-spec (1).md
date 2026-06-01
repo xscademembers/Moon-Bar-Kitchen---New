@@ -160,36 +160,9 @@ moonbar/
 ### 3.1 Concept
 The brand is **Moon Bar & Kitchen** — lean fully into the celestial metaphor. The site should feel like stepping into a rooftop bar at night: a deep midnight sky, a luminous moon, drifting stars, and warm amber accents from the city lights and cocktail glow below.
 
-### 3.2 Color tokens
+### 3.2 Color 
 
-```css
-:root {
-  /* Sky */
-  --mb-midnight: #07091a;
-  --mb-deep-space: #0f1430;
-  --mb-nebula: #1c1644;
-  --mb-aurora: #3a2a73;
-
-  /* Moonlight */
-  --mb-moon-bone: #f4f1e8;     /* primary text on dark */
-  --mb-moon-soft: #d9d3c0;
-  --mb-moon-crater: #8f877a;
-
-  /* Bar lights (warm accent) */
-  --mb-amber: #f5b454;         /* primary CTA */
-  --mb-amber-glow: #ffd58a;
-  --mb-copper: #c97a3a;
-
-  /* Cocktail accents (use sparingly) */
-  --mb-cosmic-pink: #ff6ba6;
-  --mb-aurora-teal: #4fd1c5;
-
-  /* Functional */
-  --mb-success: #6ee7b7;
-  --mb-warn: #fbbf24;
-  --mb-error: #f87171;
-}
-```
+i have shared the screenshots for coour palatte
 
 ### 3.3 Type
 - **Display:** *Cormorant Garamond* (serif, italics on tagline) — elegance, fine-dining cue.

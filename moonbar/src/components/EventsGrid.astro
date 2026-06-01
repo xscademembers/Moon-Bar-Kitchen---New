@@ -1,5 +1,12 @@
 ---
+import type { WeeklyEvent } from '../lib/fetch-content';
 import { weeklyEvents } from '../data/mock';
+
+interface Props {
+  events?: WeeklyEvent[];
+}
+
+const { events = weeklyEvents } = Astro.props;
 ---
 
 <section class="section-padding bg-[#FAF8F4]">
@@ -17,7 +24,7 @@ import { weeklyEvents } from '../data/mock';
     </div>
 
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {weeklyEvents.map((event, i) => (
+      {events.map((event, i) => (
         <article
           class="reveal group overflow-hidden rounded-2xl transition-all duration-300 hover:border-[rgba(255,218,127,0.35)]"
           style={`

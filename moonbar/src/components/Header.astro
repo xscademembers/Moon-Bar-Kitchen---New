@@ -1,4 +1,6 @@
 ---
+import { siteInfo } from '../data/mock';
+
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/menu', label: 'Menu' },
@@ -15,12 +17,16 @@ const currentPath = Astro.url.pathname;
 <header class="fixed inset-x-0 top-0 z-50 transition-all duration-300" id="site-header">
   <div class="absolute inset-0 bg-moon-bg-deep/80 backdrop-blur-md border-b border-moon-cream/5"></div>
   <nav class="container-moon relative flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8" aria-label="Main navigation">
-    <a href="/" class="group flex items-center gap-3">
-      <span class="flex h-10 w-10 items-center justify-center rounded-full bg-moon-surface border border-moon-gold/30 text-lg moon-glow" aria-hidden="true">🌙</span>
-      <div class="hidden sm:block">
-        <span class="font-display text-xl text-moon-cream group-hover:text-moon-gold transition-colors">Moon Bar</span>
-        <span class="block font-accent text-xs uppercase tracking-[0.2em] text-moon-sand/80">& Kitchen</span>
-      </div>
+    <a href="/" class="group flex items-center">
+      <img
+        src={encodeURI(siteInfo.logo)}
+        alt={siteInfo.name}
+        class="h-9 w-auto object-contain transition-opacity group-hover:opacity-90 sm:h-10"
+        width="120"
+        height="40"
+        loading="eager"
+        decoding="async"
+      />
     </a>
 
     <ul class="hidden items-center gap-1 lg:flex">

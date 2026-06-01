@@ -4,6 +4,7 @@ export const prerender = true;
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
 import NightSkySection from '../components/NightSkySection.astro';
+import Starfield from '../components/Starfield';
 import SpinWheel from '../components/SpinWheel';
 import AboutStrip from '../components/AboutStrip.astro';
 import MenuPreview from '../components/MenuPreview.astro';
@@ -11,9 +12,11 @@ import EventsGrid from '../components/EventsGrid.astro';
 import BlogCard from '../components/BlogCard.astro';
 import Gallery from '../components/Gallery.astro';
 import VisitUs from '../components/VisitUs.astro';
+import { fetchWeeklyEvents } from '../lib/fetch-content';
 import { blogPosts as allBlogPosts } from '../data/mock';
 
 const blogPosts = allBlogPosts.slice(0, 3);
+const weeklyEvents = await fetchWeeklyEvents();
 ---
 
 <BaseLayout
@@ -21,24 +24,26 @@ const blogPosts = allBlogPosts.slice(0, 3);
   description="Moon Bar & Kitchen — elevated resto-bar in Siripuram, Visakhapatnam. Spin the wheel for a free perk, reserve your table, and enjoy cocktails, live music & Sunday brunch."
   path="/"
 >
-  <!-- 1. Hero — Dark -->
-  <Hero />
+  <!-- Hero + Spin — one continuous night sky -->
+  <div class="relative overflow-hidden night-sky-bg">
+    <Starfield client:load />
+    <Hero />
 
-  <!-- Spin the Wheel — same night-sky + stars as hero -->
-  <NightSkySection id="wheel" class="scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
-    <div class="container-moon">
-      <div class="reveal mb-12 text-center">
-        <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">Spin &amp; Win</p>
-        <h2 class="heading-section text-moon-cream mb-4">Spin the Moon</h2>
-        <p class="mx-auto max-w-lg text-[#F5E8D8]/80">
-          Every reservation comes with a celestial perk. Give the wheel a spin and lock in your table.
-        </p>
+    <NightSkySection id="wheel" class="scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
+      <div class="container-moon">
+        <div class="reveal mb-12 text-center">
+          <p class="font-accent text-xs uppercase tracking-[0.3em] text-moon-sand mb-3">Spin &amp; Win</p>
+          <h2 class="heading-section text-moon-cream mb-4">Spin the Moon</h2>
+          <p class="mx-auto max-w-lg text-[#F5E8D8]/80">
+            Every reservation comes with a celestial perk. Give the wheel a spin and lock in your table.
+          </p>
+        </div>
+        <div class="flex justify-center">
+          <SpinWheel client:load />
+        </div>
       </div>
-      <div class="flex justify-center">
-        <SpinWheel client:load />
-      </div>
-    </div>
-  </NightSkySection>
+    </NightSkySection>
+  </div>
 
   <!-- 2. About — Light Cream -->
   <AboutStrip />
@@ -47,7 +52,7 @@ const blogPosts = allBlogPosts.slice(0, 3);
   <MenuPreview />
 
   <!-- 4. Events — Warm Orange Gradient -->
-  <EventsGrid />
+  <EventsGrid events={weeklyEvents} />
 
   <!-- 5. Blog / Guides — Dark -->
   <section class="section-padding bg-moon-dark">
