@@ -5,9 +5,10 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json().catch(() => ({}));
     const force = Boolean(body?.force);
-    const result = await seedEvents(force);
+    const merge = Boolean(body?.merge);
+    const result = await seedEvents(force, merge);
 
-    if (result.skipped) {
+    if (result.skipped && !result.merged) {
       return new Response(
         JSON.stringify({
           ok: true,

@@ -8,6 +8,33 @@ export const wheelOptions = [
 export const weeklyEvents = [
   {
     id: '1',
+    day: 'Monday',
+    title: 'Iconic Monday',
+    artist: 'TBD',
+    time: '8:00 PM – 11:00 PM',
+    description: 'Kick off the week with iconic cocktails, curated playlists, and Moon Bar favourites.',
+    color: '#7F6F34',
+  },
+  {
+    id: '2',
+    day: 'Tuesday',
+    title: 'Twosday',
+    artist: 'TBD',
+    time: '8:00 PM – 11:00 PM',
+    description: 'Tuesday night specials and double the fun — your midweek escape under the moon.',
+    color: '#BA401D',
+  },
+  {
+    id: '3',
+    day: 'Wednesday',
+    title: 'SIP Wednesday',
+    artist: 'TBD',
+    time: '6:00 PM – 10:00 PM',
+    description: 'Sip, savour, and unwind with curated cocktails and happy-hour pours.',
+    color: '#E7A356',
+  },
+  {
+    id: '4',
     day: 'Wednesday',
     title: 'Live Band Night',
     artist: 'TBD',
@@ -16,7 +43,16 @@ export const weeklyEvents = [
     color: '#BA401D',
   },
   {
-    id: '2',
+    id: '5',
+    day: 'Thursday',
+    title: 'Thursday',
+    artist: 'TBD',
+    time: '8:00 PM – 11:00 PM',
+    description: 'Ease into the weekend with elevated vibes, craft pours, and city views.',
+    color: '#BB5524',
+  },
+  {
+    id: '6',
     day: 'Friday',
     title: 'House Friday',
     artist: 'DJ TBD',
@@ -25,7 +61,7 @@ export const weeklyEvents = [
     color: '#BB5524',
   },
   {
-    id: '3',
+    id: '7',
     day: 'Saturday',
     title: 'Bollytech Saturday',
     artist: 'DJ TBD',
@@ -34,7 +70,7 @@ export const weeklyEvents = [
     color: '#E7A356',
   },
   {
-    id: '4',
+    id: '8',
     day: 'Sunday',
     title: 'Sunday Brunch',
     artist: 'Buffet + bottomless mimosas',
@@ -43,7 +79,7 @@ export const weeklyEvents = [
     color: '#FFDA7F',
   },
   {
-    id: '5',
+    id: '9',
     day: 'Sunday Evening',
     title: 'Sunday Live Band',
     artist: 'TBD',

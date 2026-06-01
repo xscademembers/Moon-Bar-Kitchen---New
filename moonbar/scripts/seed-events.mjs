@@ -23,12 +23,18 @@ function loadEnv() {
 loadEnv();
 
 const events = [
-  { day: 'Wednesday', title: 'Live Band Night', artist: 'TBD', time: '8:00 PM – 11:00 PM', description: 'Acoustic sets under the stars — live music every Wednesday.', color: '#BA401D' },
-  { day: 'Friday', title: 'House Friday', artist: 'DJ TBD', time: '8:00 PM – 11:00 PM', description: 'Deep house grooves and elevated vibes to kick off the weekend.', color: '#BB5524' },
-  { day: 'Saturday', title: 'Bollytech Saturday', artist: 'DJ TBD', time: '8:00 PM – 11:00 PM', description: "Bollywood meets tech house — Vizag's favourite Saturday night.", color: '#E7A356' },
-  { day: 'Sunday', title: 'Sunday Brunch', artist: 'Buffet + bottomless mimosas', time: '12:00 PM – 4:00 PM', description: 'Lazy Sunday brunch with live ambience and city views.', color: '#FFDA7F' },
-  { day: 'Sunday Evening', title: 'Sunday Live Band', artist: 'TBD', time: '7:30 PM – 10:30 PM', description: 'Wind down the weekend with live music and craft cocktails.', color: '#7F6F34' },
+  { day: 'Monday', title: 'Iconic Monday', artist: 'TBD', time: '8:00 PM – 11:00 PM', description: 'Kick off the week with iconic cocktails, curated playlists, and Moon Bar favourites.', color: '#7F6F34', imageUrl: '' },
+  { day: 'Tuesday', title: 'Twosday', artist: 'TBD', time: '8:00 PM – 11:00 PM', description: 'Tuesday night specials and double the fun — your midweek escape under the moon.', color: '#BA401D', imageUrl: '' },
+  { day: 'Wednesday', title: 'SIP Wednesday', artist: 'TBD', time: '6:00 PM – 10:00 PM', description: 'Sip, savour, and unwind with curated cocktails and happy-hour pours.', color: '#E7A356', imageUrl: '' },
+  { day: 'Wednesday', title: 'Live Band Night', artist: 'TBD', time: '8:00 PM – 11:00 PM', description: 'Acoustic sets under the stars — live music every Wednesday.', color: '#BA401D', imageUrl: '' },
+  { day: 'Thursday', title: 'Thursday', artist: 'TBD', time: '8:00 PM – 11:00 PM', description: 'Ease into the weekend with elevated vibes, craft pours, and city views.', color: '#BB5524', imageUrl: '' },
+  { day: 'Friday', title: 'House Friday', artist: 'DJ TBD', time: '8:00 PM – 11:00 PM', description: 'Deep house grooves and elevated vibes to kick off the weekend.', color: '#BB5524', imageUrl: '' },
+  { day: 'Saturday', title: 'Bollytech Saturday', artist: 'DJ TBD', time: '8:00 PM – 11:00 PM', description: "Bollywood meets tech house — Vizag's favourite Saturday night.", color: '#E7A356', imageUrl: '' },
+  { day: 'Sunday', title: 'Sunday Brunch', artist: 'Buffet + bottomless mimosas', time: '12:00 PM – 4:00 PM', description: 'Lazy Sunday brunch with live ambience and city views.', color: '#FFDA7F', imageUrl: '' },
+  { day: 'Sunday Evening', title: 'Sunday Live Band', artist: 'TBD', time: '7:30 PM – 10:30 PM', description: 'Wind down the weekend with live music and craft cocktails.', color: '#7F6F34', imageUrl: '' },
 ];
+
+const merge = process.argv.includes('--merge');
 
 const uri = process.env.MONGODB_URI;
 const dbName = process.env.MONGODB_DB || 'moonbar';
@@ -43,6 +49,35 @@ await client.connect();
 const collection = client.db(dbName).collection('events');
 
 const existing = await collection.countDocuments();
+
+if (existing > 0 && merge) {
+  const existingTitles = new Set(
+    (await collection.find({}, { projection: { title: 1 } }).toArray()).map((doc) => doc.title)
+  );
+  const missing = events.filter((event) => !existingTitles.has(event.title));
+
+  if (missing.length === 0) {
+    console.log('All default events already exist.');
+    await client.close();
+    process.exit(0);
+  }
+
+  const last = await collection.find({}).sort({ order: -1 }).limit(1).toArray();
+  let nextOrder = (last[0]?.order ?? -1) + 1;
+  const now = new Date();
+  const docs = missing.map((event) => ({
+    ...event,
+    order: nextOrder++,
+    createdAt: now,
+    updatedAt: now,
+  }));
+
+  const result = await collection.insertMany(docs);
+  console.log(`Added ${result.insertedCount} missing events: ${missing.map((e) => e.title).join(', ')}`);
+  await client.close();
+  process.exit(0);
+}
+
 if (existing > 0) {
   console.log(`Skipping seed: ${existing} events already exist.`);
   await client.close();

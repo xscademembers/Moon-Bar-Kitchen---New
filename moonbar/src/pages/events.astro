@@ -26,15 +26,27 @@ const weeklyEvents = await fetchWeeklyEvents();
             class="reveal card-moon flex flex-col overflow-hidden sm:flex-row"
             style={`transition-delay: ${i * 60}ms`}
           >
-            <div
-              class="sm:w-48 shrink-0 flex items-center justify-center p-8"
-              style={`background: linear-gradient(135deg, ${event.color}33, ${event.color}11)`}
-            >
-              <div class="text-center">
-                <p class="font-accent text-xs uppercase tracking-[0.2em] text-moon-sand">{event.day}</p>
-                <p class="font-display text-2xl text-moon-gold mt-1">{event.time.split('–')[0].trim()}</p>
+            {event.imageUrl ? (
+              <div class="flex shrink-0 items-center justify-center bg-[#1b1b1b] p-3 sm:w-52 lg:w-60">
+                <img
+                  src={event.imageUrl}
+                  alt={event.title}
+                  class="h-auto max-h-72 w-full object-contain sm:max-h-80"
+                  loading={i < 2 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
               </div>
-            </div>
+            ) : (
+              <div
+                class="sm:w-48 shrink-0 flex items-center justify-center p-8"
+                style={`background: linear-gradient(135deg, ${event.color}33, ${event.color}11)`}
+              >
+                <div class="text-center">
+                  <p class="font-accent text-xs uppercase tracking-[0.2em] text-moon-sand">{event.day}</p>
+                  <p class="font-display text-2xl text-moon-gold mt-1">{event.time.split('–')[0].trim()}</p>
+                </div>
+              </div>
+            )}
             <div class="flex-1 p-6 sm:p-8">
               <h2 class="font-display text-2xl text-moon-cream mb-2">{event.title}</h2>
               <p class="font-accent text-sm text-moon-sand mb-3">{event.artist} · {event.time}</p>

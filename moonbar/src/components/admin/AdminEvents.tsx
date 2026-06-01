@@ -8,6 +8,7 @@ interface EventItem {
   time: string;
   description: string;
   color: string;
+  imageUrl: string;
   order: number;
 }
 
@@ -26,6 +27,7 @@ const emptyForm = {
   time: '',
   description: '',
   color: '#BB5524',
+  imageUrl: '',
 };
 
 export default function AdminEvents() {
@@ -60,6 +62,7 @@ export default function AdminEvents() {
       time: item.time,
       description: item.description,
       color: item.color,
+      imageUrl: item.imageUrl || '',
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -86,7 +89,7 @@ export default function AdminEvents() {
     load();
   };
 
-  const importDefaults = async (force = false) => {
+  const importDefaults = async (force = false, merge = false) => {
     if (force && !confirm('Replace all events with the default weekly schedule? This cannot be undone.')) {
       return;
     }
@@ -95,10 +98,15 @@ export default function AdminEvents() {
     const res = await fetch('/api/admin/events/seed', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ force }),
+      body: JSON.stringify({ force, merge }),
     });
     const data = await res.json();
     setSeeding(false);
+
+    if (data.skipped && merge) {
+      alert('All default events are already in the database.');
+      return;
+    }
 
     if (data.skipped) {
       alert('Default events are already in the database.');
@@ -169,7 +177,20 @@ export default function AdminEvents() {
             onChange={(e) => setForm({ ...form, description: e.target.value })}
             className="rounded-lg border border-[#f9e1cd]/20 bg-[#1a1a1a] px-4 py-2 text-[#f9e1cd] sm:col-span-2"
           />
+          <input
+            placeholder="Image URL (https://...)"
+            value={form.imageUrl}
+            onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+            className="rounded-lg border border-[#f9e1cd]/20 bg-[#1a1a1a] px-4 py-2 text-[#f9e1cd] sm:col-span-2"
+          />
         </div>
+        {form.imageUrl && (
+          <img
+            src={form.imageUrl}
+            alt="Preview"
+            className="h-36 w-full max-w-sm rounded-lg object-cover border border-[#f9e1cd]/20"
+          />
+        )}
         <div className="flex flex-wrap gap-3">
           <button
             type="submit"
@@ -194,7 +215,7 @@ export default function AdminEvents() {
       ) : items.length === 0 ? (
         <div className="rounded-xl border border-[#f9e1cd]/10 bg-[#222] p-8 text-center space-y-4">
           <p className="text-[#f9e1cd]/80">
-            No events in the database yet. Import the 5 default weekly events from the website.
+            No events in the database yet. Import the 9 default weekly events from the website.
           </p>
           <button
             type="button"
@@ -209,22 +230,41 @@ export default function AdminEvents() {
         <div className="space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <p className="text-sm text-[#f9e1cd]/60">{items.length} events in database</p>
-            <button
-              type="button"
-              onClick={() => importDefaults(true)}
-              disabled={seeding}
-              className="text-xs text-[#f9e1cd]/60 hover:text-[#ffda7f] disabled:opacity-50"
-            >
-              Reset to default schedule
-            </button>
+            <div className="flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={() => importDefaults(false, true)}
+                disabled={seeding}
+                className="text-xs text-[#ffda7f] hover:underline disabled:opacity-50"
+              >
+                Add missing default events
+              </button>
+              <button
+                type="button"
+                onClick={() => importDefaults(true)}
+                disabled={seeding}
+                className="text-xs text-[#f9e1cd]/60 hover:text-[#ffda7f] disabled:opacity-50"
+              >
+                Reset to default schedule
+              </button>
+            </div>
           </div>
           {items.map((item) => (
             <div
               key={item._id}
-              className="rounded-xl border border-[#f9e1cd]/10 bg-[#222] p-4 sm:p-5"
+              className="overflow-hidden rounded-xl border border-[#f9e1cd]/10 bg-[#222]"
               style={{ borderLeftColor: item.color, borderLeftWidth: '4px' }}
             >
-              <div className="flex flex-wrap items-start justify-between gap-3">
+              {item.imageUrl && (
+                <div className="h-32 bg-[#1a1a1a]">
+                  <img
+                    src={item.imageUrl}
+                    alt={item.title}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              )}
+              <div className="flex flex-wrap items-start justify-between gap-3 p-4 sm:p-5">
                 <div>
                   <p className="text-xs font-medium uppercase tracking-wider text-[#ffda7f]">{item.day}</p>
                   <p className="mt-1 font-medium text-[#f9e1cd]">{item.title}</p>

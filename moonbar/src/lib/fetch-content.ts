@@ -10,7 +10,53 @@ export type WeeklyEvent = {
   time: string;
   description: string;
   color: string;
+  imageUrl?: string;
 };
+
+const WEEKDAY_ORDER: Record<string, number> = {
+  monday: 0,
+  tuesday: 1,
+  wednesday: 2,
+  thursday: 3,
+  friday: 4,
+  saturday: 5,
+  sunday: 6,
+};
+
+function getWeekdaySortKey(day: string): number {
+  const normalized = day.trim().toLowerCase();
+
+  if (normalized.includes('sunday') && normalized.includes('evening')) {
+    return 6.5;
+  }
+
+  for (const [name, order] of Object.entries(WEEKDAY_ORDER)) {
+    if (normalized === name || normalized.startsWith(`${name} `)) {
+      return order;
+    }
+  }
+
+  return 99;
+}
+
+function getTimeSortKey(time: string): number {
+  const match = time.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if (!match) return 0;
+
+  let hours = Number(match[1]) % 12;
+  const minutes = Number(match[2]);
+  if (match[3].toUpperCase() === 'PM') hours += 12;
+
+  return hours * 60 + minutes;
+}
+
+export function sortEventsByWeekOrder(events: WeeklyEvent[]): WeeklyEvent[] {
+  return [...events].sort((a, b) => {
+    const dayDiff = getWeekdaySortKey(a.day) - getWeekdaySortKey(b.day);
+    if (dayDiff !== 0) return dayDiff;
+    return getTimeSortKey(a.time) - getTimeSortKey(b.time);
+  });
+}
 
 export type MenuItem = {
   name: string;
@@ -167,19 +213,22 @@ async function fetchWeeklyEventsInner(): Promise<WeeklyEvent[]> {
       .sort({ order: 1, createdAt: 1 })
       .toArray();
 
-    if (docs.length === 0) return fallbackEvents;
+    if (docs.length === 0) return sortEventsByWeekOrder(fallbackEvents);
 
-    return docs.map((doc) => ({
-      id: doc._id.toString(),
-      day: doc.day as string,
-      title: doc.title as string,
-      artist: (doc.artist as string) || '',
-      time: doc.time as string,
-      description: (doc.description as string) || '',
-      color: (doc.color as string) || '#BB5524',
-    }));
+    return sortEventsByWeekOrder(
+      docs.map((doc) => ({
+        id: doc._id.toString(),
+        day: doc.day as string,
+        title: doc.title as string,
+        artist: (doc.artist as string) || '',
+        time: doc.time as string,
+        description: (doc.description as string) || '',
+        color: (doc.color as string) || '#BB5524',
+        imageUrl: (doc.imageUrl as string) || '',
+      }))
+    );
   } catch {
-    return fallbackEvents;
+    return sortEventsByWeekOrder(fallbackEvents);
   }
 }
 

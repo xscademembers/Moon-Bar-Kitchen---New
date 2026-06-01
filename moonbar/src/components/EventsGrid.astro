@@ -1,5 +1,5 @@
 ---
-import type { WeeklyEvent } from '../lib/fetch-content';
+import { sortEventsByWeekOrder, type WeeklyEvent } from '../lib/fetch-content';
 import { weeklyEvents } from '../data/mock';
 
 interface Props {
@@ -7,6 +7,7 @@ interface Props {
 }
 
 const { events = weeklyEvents } = Astro.props;
+const sortedEvents = sortEventsByWeekOrder(events);
 ---
 
 <section class="section-padding bg-[#FAF8F4]">
@@ -24,7 +25,7 @@ const { events = weeklyEvents } = Astro.props;
     </div>
 
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {events.map((event, i) => (
+      {sortedEvents.map((event, i) => (
         <article
           class="reveal group overflow-hidden rounded-2xl transition-all duration-300 hover:border-[rgba(255,218,127,0.35)]"
           style={`
@@ -34,6 +35,23 @@ const { events = weeklyEvents } = Astro.props;
             transition-delay: ${i * 80}ms;
           `}
         >
+          <div class="relative aspect-[4/5] overflow-hidden bg-[#2a3220]">
+            {event.imageUrl ? (
+              <img
+                src={event.imageUrl}
+                alt={event.title}
+                class="h-full w-full object-contain object-center transition-transform duration-500 group-hover:scale-[1.02]"
+                loading={i < 3 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+            ) : (
+              <div
+                class="h-full w-full"
+                style={`background: linear-gradient(135deg, ${event.color}66, ${event.color}22);`}
+              ></div>
+            )}
+          </div>
+
           <div class="p-6">
             <div class="mb-3 flex flex-wrap items-center gap-2 sm:justify-between">
               <span
